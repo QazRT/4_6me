@@ -36,10 +36,11 @@
           aria-controls="collapseSubaru" onclick="ClearJumbo(true)">Subaru</a>
         </div>
       </div>
-      <button class="btn btn-secondary my-2 my-sm-0" id="LoginLabel" style="color: whitesmoke; font-family: Aller" disabled hidden></button>
       <!-- <button class="btn btn-success my-2 my-sm-0" type="button" onclick="document.location = 'login.html'">Login</button> -->
       <button id="LoginButton" class="btn btn-success my-2 my-sm-0" type="button" data-toggle="collapse" data-target="#collapseLogin" 
-      aria-expanded="false" aria-controls="collapseLogin" style="font-family: Aller"  onclick="ClearJumbo(true)">Login</button>
+      aria-expanded="false" aria-controls="collapseLogin" style="font-family: Rostov"  onclick="ClearJumbo(true)">Вход</button>
+      <a class="nav-item nav-link"></a>
+      <button class="btn btn-secondary my-2 my-sm-0" id="LoginLabel" style="color: whitesmoke; font-family: Rostov" disabled hidden></button>
   </nav>
 
 
@@ -80,16 +81,33 @@
           <div class="card" style="width: 18rem;">
             <div class="card-body">
               <h5 class="card-title" style="font-family: Rostov; font-size: 24px;">Вход</h5>
+
+              
+              
+              <form action="#" onsubmit="Login()" class="needs-validation">
                 <div class="form-group">
-                  <input type="login" class="form-control" id="InputLogin" aria-describedby="emailHelp"
-                      placeholder="Введите логин" style="font-family: Rostov">
+                  <input type="email" class="form-control" id="InputLogin" placeholder="Введите логин" style="font-family: Rostov" required>
                 </div>
                 <div class="form-group">
                   <input type="password" class="form-control" id="InputPassword" 
-                      placeholder="Пароль" style="font-family: Rostov">
+                  placeholder="Пароль" style="font-family: Rostov" minlength="8" required>
                 </div>
-                <button type="submit" class="btn btn-primary" onclick="Login()" data-toggle="collapse" data-target="#collapseHome" 
-                aria-expanded="false" aria-controls="collapseHome" style="font-family: Rostov">Ввод</button>
+
+                  <div id="collapseCardReg" class="collapse">
+                    <div class="form-group">
+                      <input type="password" class="form-control" id="InputPassword2" 
+                      placeholder="Повторите пароль" style="font-family: Rostov" minlength="8">
+                    </div>
+                    <div id="collapseErrorPass" class="collapse">
+                      <p style="width:max-content; color: rgb(255, 77, 77); font-family: Rostov; background-color: rgba(255, 255, 255, 0.168); border-radius: 5px;"> Пароли не совпадают!</p>
+                    </div>                
+                  </div>                
+                    
+                    <button type="submit" class="btn btn-primary" style="font-family: Rostov">Ввод</button>
+                    <button id="Regbtn" onclick="Registration()" data-toggle="collapse" data-target="#collapseCardReg" aria-expanded="false" aria-controls="collapseCardReg"
+                        type="button" class="btn btn-success" style="font-family: Rostov; position: absolute; right: 7%;">Регистрация</button>
+                  </form>
+                  
 
             </div>
           </div>
@@ -382,17 +400,17 @@
 
 
   <footer>
-    <a style="color: rgb(44, 5, 59); text-align: right; right: 1%">since 2022</a>
+    <a style="color: #a072c5; text-align: right; right: 1%">since 2022</a>
     <a data-toggle="collapse" data-target="#collapseHome" aria-controls="collapseHome"
-    style="font-family: Rostov; color: rgb(44, 5, 59);">JapanLine</a>
+    style="font-family: Rostov; color: #a072c5;">JapanLine</a>
     <a class="footer_phnumber"
-    href="tel:+7 (495) 888-98-98" style="font-family: Rostov; color: rgb(44, 5, 59); text-align: left; left: 15%">+7 (495) 888-98-98</a>
+    href="tel:+7 (495) 888-98-98" style="font-family: Rostov; color: #a072c5; text-align: left; left: 15%">+7 (495) 888-98-98</a>
     <a class="footer_phnumber"
-    href="tel:+7 (968) 888-28-28" style="font-family: Rostov; color: rgb(44, 5, 59); text-align: left; left: 29%">+7 (968) 888-28-28</a>
+    href="tel:+7 (968) 888-28-28" style="font-family: Rostov; color: #a072c5; text-align: left; left: 29%">+7 (968) 888-28-28</a>
 
     <a class="footer_img" href="https://www.youtube.com/@noblessshut/"><img src="res\\yt.png" style="left: 1%;"></a>
     <a class="footer_img" href="https://vk.com/yajbt"><img src="res\\vk.ico" style="left: 5%;"></a>
-    <a class="footer_img" href="mailto:yakupovman@mail.ru"><img src="res\\mail.ico" style="left: 9%;"></a>
+    <a class="footer_img" href="mailto:yakupovman@mail.ru"><img src="res\\mail.png" style="left: 9%;"></a>
 
   </footer>
 
@@ -426,7 +444,40 @@
     document.getElementById('CViewJumbo').style.animation = 'ani 0.5s forwards';
   }
 
+function Registration() {
+  if (document.getElementById('InputPassword2').required != true) {
+    document.getElementById('Regbtn').innerHTML = "Вход";
+    document.getElementById('InputPassword2').required=true;
+  }
+  else {
+    document.getElementById('Regbtn').innerHTML = "Регистрация";
+    document.getElementById('InputPassword2').required=false;
+  }
+
+
+}
+
   function Login() {
+    if (document.getElementById('InputPassword2').required==true && document.getElementById("InputPassword2").value != document.getElementById("InputPassword").value) {
+      var bsCollapseHome = new bootstrap.Collapse(document.getElementById('collapseErrorPass'), {
+        toggle: true
+      });
+      return;
+    }
+
+
+    var CollHome = document.getElementById('collapseHome');
+    var bsCollapseHome = new bootstrap.Collapse(CollHome, {
+      toggle: true
+    });
+
+    var CollLogin = document.getElementById('collapseLogin');
+    var bsCollapse = new bootstrap.Collapse(CollLogin, {
+      hide: true
+    });
+
+
+
     document.getElementById("LoginButton").hidden = true;
 
     document.getElementById("LoginLabel").innerHTML = document.getElementById("InputLogin").value;
@@ -442,5 +493,4 @@
       document.getElementById('HomeJumbo').style.animation = 'ani 1s forwards';
     }
   }
-
 </script>
