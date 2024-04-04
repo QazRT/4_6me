@@ -1,0 +1,8 @@
+﻿__pycache__/*
+tools/__pycache__/*
+venv/*
+cert/*
+logs/*
+.vscode/*
+*.sh
+tools/db_creds.json

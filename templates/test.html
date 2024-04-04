@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <script>
+    function ExecPythonCommand(){
+      var request = new XMLHttpRequest()
+      request.open("GET", "/test_button", true)
+      request.send()
+  }
+  </script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello Page</title>
+  </head>
+  <body>
+    <h1>Hello, {{ name }}!</h1>
+    <p>Welcome to our simple Flask app.</p>
+  </body>
+</html>
