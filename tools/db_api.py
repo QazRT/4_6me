@@ -3,6 +3,10 @@ import psycopg2.extras
 import json
 import logging as log
 
+class AucActions:
+    HIDE = "Hide"
+    UNHIDE = "Unhide"
+    SOLD = "Sold"
 
 class DBConnection:
     def __init__(self):
@@ -162,13 +166,23 @@ class DBConnection:
         try:
             if action not in ["Bet", "Hide", "Unhide", "Sold"]:
                 raise ValueError(f"Invalid action ({action})")
+            
+            if self.get_auc_car_status(car_id) == "Sold":
+                raise ValueError("Car is already sold")
+            
             prompt = 'INSERT INTO public."Auction_history" (user_id, car_id, action, action_info) \
 	                    VALUES (%(user_id)s, %(car_id)s, %(action)s, %(action_info)s);'
             
             self.executeonce( prompt, {"user_id":user_id, "car_id":car_id, "action":action, "action_info":action_info})
+            return True
+        
         except Exception as e:
             log.error(e)
+            return False
      
+    def set_auc_car_status(self, user_id: int, car_id: int, status: AucActions, comment: str = ""):
+        self.insert_to_auc_history(user_id, car_id, status, action_info=comment)
+        
     def get_auc_car_price(self, car_id):
         try:
             self.executeonce("""SELECT SUM(CAST("action_info" AS INT)) FROM "Auction_history"
@@ -180,9 +194,10 @@ class DBConnection:
         
     def get_auc_car_status(self, car_id):
         try:
-            self.executeonce("""SELECT SUM(CAST("action_info" AS INT)) FROM "Auction_history"
-                             WHERE "action" = 'Bet' AND "car_id" = %(car_id)s""", {"car_id": car_id})
-            return self.cur.fetchone()['sum']
+            self.executeonce("""SELECT "action" FROM "Auction_history"
+                             WHERE "action" != 'Bet' AND "car_id" = %(car_id)s 
+                             ORDER BY timestamp DESC LIMIT 1""", {"car_id": car_id})
+            return self.cur.fetchone()['action']
         
         except Exception as e:
             log.error(e)
