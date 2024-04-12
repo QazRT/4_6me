@@ -1,27 +1,164 @@
-﻿<!DOCTYPE html>
 <html lang="en">
-  <script>
-    function ExecPythonCommand(){
-      var request = new XMLHttpRequest()
-      request.open("GET", "/test_button", true)
-      request.send()
-  }
-  </script>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noblesse Oblige</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="../static/css/home.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
   </head>
   <body>
-    <h1>Hello, {{ name }}!</h1>
-    <p>Welcome to our simple Flask app.</p>
-    <form method="POST" onsubmit="ExecPythonCommand()">
-      <input name="args"/>
-      <select name="test_select">
-        {% for a in option %}
-          <option value={{a}}>{{a}}</option>
-        {% endfor %}
-      </select>
-      <button type="submit">Exec</button>
-    </form>
+    <div class="main-container">
+      <div class="rectangle">
+        <div class="label icon-class" href="/"></div>
+        <a class="phone-number hover-class" href="tel:+78165158148">+7 (816) 515-81-48</a>
+        <div class="icon"></div>
+        <div class="icon-1 icon-class"></div>
+        <div class="icon-2 icon-class"></div>
+      </div>
+      <div class="background">
+        <span class="text">Аукционы автомобилей <br />с пробегом</span>
+        <div class="red-car"></div>
+        <div class="line-5"></div>
+        <span class="text-6">Быстро. Качественно. Доступно</span>
+      </div>
+      <div class="flex-row-b">
+        <span class="active-auction">Активных аукционов:</span><span class="number-auction">{{ auction_count }}</span>
+      </div>
+      <div class="auction">
+        <div class="blue-car" style="--img: url('{{ auc_car_img }}');"></div>
+        <span class="name-auction">{{ auc_car_brand }} {{ auc_car_model }} {{ auc_car_year }}, {{ auc_car_trans }}</span>
+        <span class="text-before-end">До завершения торгов</span><span class="time-before" id="time_until_close"></span>
+        <span class="text-end-date-time">Дата и время окончания</span><span class="date-time">{{ auc_car_close_date }}</span>
+        <span class="participants">Участников</span><span class="client-number">{{ participants_count }}</span>
+        <span class="buyout-price">Текущая цена</span><span class="start-price">Стартовая цена</span>
+        <span class="low-price">{{ start_price }}</span><span class="top-price">{{ current_price }}</span>
+        <span class="icon-7">₽</span><span class="icon-8">₽</span>
+      </div>
+      <div class="rectangle-9" onclick="document.location='/test'">
+        <span class="text-view-mode">перейти в режим просмотра</span>
+      </div>
+      <span class="buy-used-car">Купить автомобиль с пробегом</span>
+
+      <div class="flex-row-a">
+        <div id="carouselTradeCars" class="carousel slide" data-interval="false" data-wrap="false">
+          <ol class="carousel-indicators">
+            <li data-target="#carouselTradeCars" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselTradeCars" data-slide-to="1"></li>
+          </ol>
+          <div class="carousel-inner" style="height:450px">
+            {% for car in cars %}
+              
+            {% if loop.index0 == 0 %}
+              <div class="carousel-item active">
+                {% elif loop.index % 3 == 1 %}
+              <div class="carousel-item">
+                {% endif %}
+                {% set tmp = loop.index0%3 %}
+                <div>
+                  <div class="rectangle-a" style="--left: {{ tmp }}px;"></div>
+                  <div class="car" style="--left: {{ tmp }}px; --img: url('{{ car['car_img'] }}');"></div>
+                  
+                  <span id="car_name_{{loop.index0}}" class="car_car" style="--left: {{ tmp }}px">{{ car['car_brand'] }} {{ car['car_model'] }} {{ car['car_year'] }}</span>
+                  <span id="car_info_{{loop.index0}}" class="km-suv" style="--left: {{ tmp }}px">{{ car['main_info'] }}, <br />{{ car['addit_info'] }}</span>
+                  
+                  <script>
+                    document.getElementById("car_info_{{loop.index0}}").style.top = document.getElementById("car_name_{{loop.index0}}").getBoundingClientRect().height+184.422+"px"
+                  </script>
+
+                  <span class="price-12" style="--left: {{ tmp }}px">{{ car['price'] }}  <span class="icon-13" style="--left: {{ tmp }}px">  ₽</span>              
+                  </span>
+                </div>
+                {% if loop.last %}
+                  {% if loop.index % 3 == 0 %}
+                    </div>
+                    <div class="carousel-item">
+                  {% else %}
+                    <div>
+                  {% endif %}
+                  {% set tmp = (loop.index)%3 %}
+                  <div class="btn" style="--left: {{tmp}}px; border-radius: 15px;"></div>
+                  <span class="show-more" style="--left: {{tmp}}px; border-radius: 15px;">Показать ещё</span>   
+                </div>
+            {% endif %}
+              {% if loop.index % 3 == 0 or loop.last %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <a class="carousel-control-prev" href="#carouselTradeCars" role="button" data-slide="prev" style="filter: invert(100%); width: 55px; justify-content: flex-start">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselTradeCars" role="button" data-slide="next" style="filter: invert(100%); width: 55px; justify-content: flex-end">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="rectangle-18">
+        <span class="cars">Автомобили</span>
+        <div class="flex-row-e">
+          <span class="buy hover-class">Купить</span><span class="sell hover-class">Продать</span><span class="auction-19 hover-class">Аукцион</span>
+        </div>
+        <div class="line-1a"></div>
+        <div class="flex-row-d">
+          <div class="outline-cloack"></div>
+          <div class="outline-mail"></div>
+          <div class="regroup">
+            <a class="icon-telega animation-class" href="https://t.me/noblesshut"></a>
+            <a class="icon-whats animation-class" href="https://wa.clck.bar/79684843060"></a>
+          </div>
+          <span class="time-of-work-text">Ежедневно, с 9:00 до 21:40</span><a class="phone-number-1d hover-class" href="tel:+78165158148">+7 (816) 515-81-48</a><a class="mail hover-class" href="mailto:Noblessoblige@nobless-oblige.ru">Noblessoblige@nobless-oblige.ru</a>
+          <div class="icon-1e"></div>
+        </div>
+      </div>
+      <div class="rectangle-1f">
+        <span class="text-20">© 2013-2024 Noblesse Oblige Автомобили с пробегом – официальный дилер в Москве. Обращаем Ваше внимание на то, что данный интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой. Характеристики и цены на автомобили с пробегом, указанные на сайте, приводятся в целях ознакомления потребителей с ориентировочной стоимостью авто. АО «Ноблессе облиге», ОГРН 1027700000151, ИНН 7705133757</span>
+      </div>
+    </div>
+
   </body>
 </html>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+  function show_close_time() {
+    $.ajax({
+        url: '/get_2close_time/{{auc_car_id}}',
+        type: "GET",
+        dataType: "text",
+        success: function(data) {
+            $("#time_until_close").html(data);
+        },
+    });
+}
+
+$(document).ready(function() {
+    show_close_time();
+    setInterval('show_close_time()', 1000);
+});
+
+  document.addEventListener('DOMContentLoaded', function () {
+    function toggleCarouselControl($slider, to) {
+      var $prev = $slider.find('[data-slide="prev"]');
+      var $next = $slider.find('[data-slide="next"]');
+      var displayPrev = to === 0 || to === undefined ? 'none' : 'flex';
+      var displayNext = to === $slider.find('.carousel-item').length - 1 ? 'none' : 'flex';
+      $prev.css('display', displayPrev);
+      console.log($prev)
+      $next.css('display', displayNext);
+    }
+    toggleCarouselControl($('#carouselTradeCars'));
+    $('#carouselTradeCars').on('slide.bs.carousel', function (e) {
+      toggleCarouselControl($(this), e.to);
+    });
+  });
+</script>

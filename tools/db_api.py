@@ -57,7 +57,7 @@ class DBConnection:
             fuel_type = None, body_type = None, mileage = None,
             tank_capacity = None, lenght = None, width = None,
             weight = None, engine_capacity = None, rating = None,
-            fuel_system = None, start_price = 0):
+            fuel_system = None, start_price = 0, close_time = None) -> dict:
         try:
             if type(body_type) != int and body_type != None:
                 self.executeonce("SELECT id FROM public.\"Body_types\" WHERE name = %(body_type)s", {"body_type": body_type})
@@ -74,18 +74,21 @@ class DBConnection:
             if type(transmission) != int and transmission != None:
                 self.executeonce("SELECT id FROM public.\"Transmissions\" WHERE name = %(transmission)s", {"transmission": transmission})
                 transmission = self.fetchone["id"]
+                
+            prompt = 'INSERT INTO public."Auction_cars"(brand, model, color, year, transmission, vin, hp, drive, fuel_type, body_type, mileage, tank_capacity, lenght, width, weight, engine_capacity, rating, fuel_system, start_price, close_time)\
+                VALUES (%(brand)s, %(model)s, %(color)s, %(year)s, %(transmission)s, %(vin)s, %(hp)s, %(drive)s, %(fuel_type)s, %(body_type)s, %(mileage)s, %(tank_capacity)s, %(lenght)s, %(width)s, %(weight)s, %(engine_capacity)s, %(rating)s, %(fuel_system)s, %(start_price)s, %(close_time)s);'
+            self.executeonce( prompt, {"brand": brand, "model": model, "color": color,
+                                        "year": year, "transmission": transmission, "vin": vin,
+                                        "hp": hp, "drive": drive, "fuel_type": fuel_type,
+                                        "body_type": body_type, "mileage": mileage, "tank_capacity": tank_capacity,
+                                        "lenght": lenght, "width": width, "weight": weight,
+                                        "engine_capacity": engine_capacity, "rating": rating, "fuel_system": fuel_system,
+                                        "start_price": start_price, "close_time": close_time})
+            
+            return {"status": True, "message": "Successfully added new car"}
         except Exception as e:
             log.error(e)
-        
-        prompt = 'INSERT INTO public."Auction_cars"(brand, model, color, year, transmission, vin, hp, drive, fuel_type, body_type, mileage, tank_capacity, lenght, width, weight, engine_capacity, rating, fuel_system, start_price)\
-            VALUES (%(brand)s, %(model)s, %(color)s, %(year)s, %(transmission)s, %(vin)s, %(hp)s, %(drive)s, %(fuel_type)s, %(body_type)s, %(mileage)s, %(tank_capacity)s, %(lenght)s, %(width)s, %(weight)s, %(engine_capacity)s, %(rating)s, %(fuel_system)s, %(start_price)s);'
-        self.executeonce( prompt, {"brand": brand, "model": model, "color": color,
-                                    "year": year, "transmission": transmission, "vin": vin,
-                                    "hp": hp, "drive": drive, "fuel_type": fuel_type,
-                                    "body_type": body_type, "mileage": mileage, "tank_capacity": tank_capacity,
-                                    "lenght": lenght, "width": width, "weight": weight,
-                                    "engine_capacity": engine_capacity, "rating": rating, "fuel_system": fuel_system,
-                                    "start_price": start_price})
+            return {"status": False, "message": f"{e}"}
 
     def add_trade_car(
             self, brand = None, model = None,
@@ -94,7 +97,7 @@ class DBConnection:
             fuel_type = None, body_type = None, mileage = None,
             tank_capacity = None, lenght = None, width = None,
             weight = None, engine_capacity = None, rating = None,
-            fuel_system = None, price = 0, status = None):
+            fuel_system = None, price = 0, status = None) -> dict:
 
         try:
             if type(body_type) != int and body_type != None:
@@ -115,28 +118,54 @@ class DBConnection:
             if type(status) != int and status != None:
                 self.executeonce("SELECT id FROM public.\"States\" WHERE name = %(status)s", {"status": status})
                 status = self.fetchone["id"]
-        except:
-            pass
+                
+            prompt = 'INSERT INTO public."Auction_cars"(brand, model, color, year, transmission, vin, hp, drive, fuel_type, body_type, mileage, tank_capacity, lenght, width, weight, engine_capacity, rating, fuel_system, price, status)\
+                        VALUES (%(brand)s, %(model)s, %(color)s, %(year)s, %(transmission)s, %(vin)s, %(hp)s, %(drive)s, %(fuel_type)s, %(body_type)s, %(mileage)s, %(tank_capacity)s, %(lenght)s, %(width)s, %(weight)s, %(engine_capacity)s, %(rating)s, %(fuel_system)s, %(price)s, %(status)s);'
+            self.executeonce( prompt, {"brand": brand, "model": model, "color": color,
+                                        "year": year, "transmission": transmission, "vin": vin,
+                                        "hp": hp, "drive": drive, "fuel_type": fuel_type,
+                                        "body_type": body_type, "mileage": mileage, "tank_capacity": tank_capacity,
+                                        "lenght": lenght, "width": width, "weight": weight,
+                                        "engine_capacity": engine_capacity, "rating": rating, "fuel_system": fuel_system,
+                                        "price": price, "status": status})
+            return {"status": True, "message": "Successfully added new car"}
+            
+        except Exception as e:
+            log.error(e)
+            return {"status": False, "message": f"{e}"}
         
-        prompt = 'INSERT INTO public."Auction_cars"(brand, model, color, year, transmission, vin, hp, drive, fuel_type, body_type, mileage, tank_capacity, lenght, width, weight, engine_capacity, rating, fuel_system, price, status)\
-            VALUES (%(brand)s, %(model)s, %(color)s, %(year)s, %(transmission)s, %(vin)s, %(hp)s, %(drive)s, %(fuel_type)s, %(body_type)s, %(mileage)s, %(tank_capacity)s, %(lenght)s, %(width)s, %(weight)s, %(engine_capacity)s, %(rating)s, %(fuel_system)s, %(price)s, %(status)s);'
-        self.executeonce( prompt, {"brand": brand, "model": model, "color": color,
-                                    "year": year, "transmission": transmission, "vin": vin,
-                                    "hp": hp, "drive": drive, "fuel_type": fuel_type,
-                                    "body_type": body_type, "mileage": mileage, "tank_capacity": tank_capacity,
-                                    "lenght": lenght, "width": width, "weight": weight,
-                                    "engine_capacity": engine_capacity, "rating": rating, "fuel_system": fuel_system,
-                                    "price": price, "status": status})
+    def add_pics_2_auc_car(self, pics: list, car_id: int) -> dict: 
+        try:
+            for pic in pics:
+                self.executeonce("INSERT INTO public.\"Auction_car_imgs\"(pic_name, car_id)\
+                                    VALUES (%(pic_name)s, %(car_id)s);", {"pic_name": pic, "car_id": car_id})
+            return {"status": True, "message": "Successfully added new pics"}
+        except Exception as e:
+            log.error(e)
+            return {"status": False, "message": f"{e}"}
+                
+    def add_pics_2_trade_car(self, pics: list, car_id: int) -> dict: 
+        try:
+            for pic in pics:
+                self.executeonce("INSERT INTO public.\"Trade_car_imgs\"(pic_name, car_id)\
+                                    VALUES (%(pic_name)s, %(car_id)s);", {"pic_name": pic, "car_id": car_id})
+            return {"status": True, "message": "Successfully added new pics"}
+        except Exception as e:
+            log.error(e)
+            return {"status": False, "message": f"{e}"}
+                
+
+
 
     def add_user(self, name, surname, 
                  phone_number, birthday, passkey,
-                 email = None, role = "User"):
+                 email = None, role = "User") -> dict:
         try:
             self.executeonce("""SELECT (SELECT COUNT(*) FROM "Users" 
                              WHERE "Email" = %(email)s OR "Phone_number" = %(phone)s) = 0 as check""", 
                              {"email":email, "phone":phone_number})
             if self.fetchone["check"] == 0:
-                return False
+                return {"status": False, "message": "Пользователь с такой почтой или телефоном уже зарегестрирован"}
                                                 
             if type(role) != int:
                 self.executeonce("SELECT id FROM public.\"Roles\" WHERE \"Name\" = %(role)s", {"role": role})
@@ -149,10 +178,11 @@ class DBConnection:
                                         "phone_number":phone_number, "birthday":birthday, "passkey":passkey,
                                         "email":email, "role":role})
 
-            return True
+            return {"status": True, "message": "Пользователь добавлен"}
             
         except Exception as e:
             log.error(e)
+            return {"status": False, "message": f"{e}"}
         
         
     def insert_to_auc_history(self, user_id: int, car_id: int, action: str, action_info: str):
@@ -203,13 +233,13 @@ class DBConnection:
             log.error(e)
 
 
-    def get_auc_car(self, id = None):
+    def get_auc_car(self, id = None, limit = None, closed = False):
         try:
             if id != None:
                 self.executeonce("""SELECT "Auction_cars".id, "Auction_cars".brand, "Auction_cars".model, "Auction_cars".color,
                                         "Auction_cars".year, "Auction_cars".vin, "Auction_cars".hp, "Auction_cars".mileage, "Auction_cars".tank_capacity,
                                         "Auction_cars".lenght, "Auction_cars".width, "Auction_cars".weight, "Auction_cars".engine_capacity, 
-                                        "Auction_cars".rating, "Auction_cars".start_price, 
+                                        "Auction_cars".rating, "Auction_cars".start_price, "Auction_cars".close_time,
                                         "Transmissions".name as transmission, "Drives".name as drive, "Fuel_types".name as fuel_type, "Fuel_types".quality as fuel_qual,
                                         "Body_types".name as body_type, "Fuel_systems".name as fuel_system
                                         FROM PUBLIC."Auction_cars"
@@ -221,11 +251,11 @@ class DBConnection:
                                         WHERE "Auction_cars".id = %(id)s
                                 """, {"id": id})
                 return dict(self.cur.fetchone())
-            else:
+            elif closed == False:
                 self.executeonce("""SELECT "Auction_cars".id, "Auction_cars".brand, "Auction_cars".model, "Auction_cars".color,
                                         "Auction_cars".year, "Auction_cars".vin, "Auction_cars".hp, "Auction_cars".mileage, "Auction_cars".tank_capacity,
                                         "Auction_cars".lenght, "Auction_cars".width, "Auction_cars".weight, "Auction_cars".engine_capacity, 
-                                        "Auction_cars".rating, "Auction_cars".start_price, 
+                                        "Auction_cars".rating, "Auction_cars".start_price, "Auction_cars".close_time,
                                         "Transmissions".name as transmission, "Drives".name as drive, "Fuel_types".name as fuel_type, "Fuel_types".quality as fuel_qual,
                                         "Body_types".name as body_type, "Fuel_systems".name as fuel_system
                                         FROM PUBLIC."Auction_cars"
@@ -233,7 +263,26 @@ class DBConnection:
                                         JOIN "Drives" ON "Auction_cars".drive = "Drives".id
                                         JOIN "Fuel_types" ON "Auction_cars".fuel_type = "Fuel_types".id
                                         JOIN "Body_types" ON "Auction_cars".body_type = "Body_types".id
-                                        JOIN "Fuel_systems" ON "Auction_cars".fuel_system = "Fuel_systems".id""")
+                                        JOIN "Fuel_systems" ON "Auction_cars".fuel_system = "Fuel_systems".id
+                                        WHERE ((SELECT "action" FROM "Auction_history" WHERE "car_id" = "Auction_cars".id ORDER BY timestamp DESC LIMIT 1) != 'Sold'
+                                                OR (SELECT count("action") FROM (SELECT "action" FROM "Auction_history" WHERE "car_id" = "Auction_cars".id ORDER BY timestamp DESC LIMIT 1)) = 0)
+                                        AND close_time > CURRENT_TIMESTAMP
+                                        ORDER BY close_time DESC LIMIT %(limit)s""", {"limit": limit})
+                return list(map(dict, self.cur.fetchall()))
+            else:
+                self.executeonce("""SELECT "Auction_cars".id, "Auction_cars".brand, "Auction_cars".model, "Auction_cars".color,
+                                        "Auction_cars".year, "Auction_cars".vin, "Auction_cars".hp, "Auction_cars".mileage, "Auction_cars".tank_capacity,
+                                        "Auction_cars".lenght, "Auction_cars".width, "Auction_cars".weight, "Auction_cars".engine_capacity, 
+                                        "Auction_cars".rating, "Auction_cars".start_price, "Auction_cars".close_time,
+                                        "Transmissions".name as transmission, "Drives".name as drive, "Fuel_types".name as fuel_type, "Fuel_types".quality as fuel_qual,
+                                        "Body_types".name as body_type, "Fuel_systems".name as fuel_system
+                                        FROM PUBLIC."Auction_cars"
+                                        JOIN "Transmissions" ON "Auction_cars".transmission = "Transmissions".id
+                                        JOIN "Drives" ON "Auction_cars".drive = "Drives".id
+                                        JOIN "Fuel_types" ON "Auction_cars".fuel_type = "Fuel_types".id
+                                        JOIN "Body_types" ON "Auction_cars".body_type = "Body_types".id
+                                        JOIN "Fuel_systems" ON "Auction_cars".fuel_system = "Fuel_systems".id
+                                        LIMIT %(limit)s""", {"limit": limit})
                 return list(map(dict, self.cur.fetchall()))
         
         except Exception as e:
@@ -276,6 +325,23 @@ class DBConnection:
         
         except Exception as e:
             log.error(e)
+    
+    def get_auc_car_pics(self, car_id: int) -> list:
+        try:
+            self.executeonce("SELECT pic_name FROM public.\"Auction_car_imgs\"\
+                    WHERE car_id = %(car_id)s;", {"car_id": car_id})
+            return list(map(dict, self.cur.fetchall()))
+        except Exception as e:
+            log.error(e)
+            return {"status": False, "message": f"{e}"}
+    
+    def get_trade_car_pics(self, car_id: int) -> list:
+        try:
+            self.executeonce('SELECT pic_name FROM public."Trade_car_imgs" WHERE car_id = %(car_id)s;', {"car_id": car_id})
+            return list(map(dict, self.cur.fetchall()))
+        except Exception as e:
+            log.error(e)
+            return {"status": False, "message": f"{e}"}
     
     def get_user_perms(self, user_id):
         try:

@@ -14,5 +14,14 @@
   <body>
     <h1>Hello, {{ name }}!</h1>
     <p>Welcome to our simple Flask app.</p>
+    <form method="POST" onsubmit="ExecPythonCommand()">
+      <input name="args"/>
+      <select name="test_select">
+        {% for a in option %}
+          <option value={{a}}>{{a}}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Exec</button>
+    </form>
   </body>
 </html>
