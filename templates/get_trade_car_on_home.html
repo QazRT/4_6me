@@ -1,0 +1,18 @@
+﻿</html>
+<div>
+  <div class="rectangle-a" style="--left: {{ tmp }}px;"></div>
+  <div class="car" style="--left: {{ tmp }}px; --img: url('{{ car['car_img'] }}');"></div>
+  
+  <span id="car_name_{{loop0}}" class="car_car" style="--left: {{ tmp }}px">{{ car['car_brand'] }} {{ car['car_model'] }} {{ car['car_year'] }}</span>
+  <span id="car_info_{{loop0}}" class="km-suv" style="--left: {{ tmp }}px">{{ car['main_info'] }}, <br />{{ car['addit_info'] }}</span>
+  
+  
+  <span class="price-12" style="--left: {{ tmp }}px">{{ car['price'] }}  <span class="icon-13" style="--left: {{ tmp }}px">  ₽</span>              
+</span>
+</div>
+<html>
+  
+<script>
+  //console.log(document.getElementById("car_name_{{loop0}}").getBoundingClientRect());
+  document.getElementById("car_info_{{loop0}}").style.top = document.getElementById("car_name_{{loop0}}").getBoundingClientRect().height+184.422+"px";
+</script>

@@ -16,10 +16,12 @@
     <div class="main-container">
       <div class="rectangle">
         <div class="label icon-class" href="/"></div>
-        <a class="phone-number hover-class" href="tel:+78165158148">+7 (816) 515-81-48</a>
-        <div class="icon"></div>
-        <div class="icon-1 icon-class"></div>
-        <div class="icon-2 icon-class"></div>
+        <div class="header_right">
+          <a class="phone-number hover-class" href="tel:+78165158148">+7 (816) 515-81-48</a>
+          <div class="icon"></div>
+          <div class="icon-1 icon-class"></div>
+          <!--<div class="icon-2 icon-class"></div> -->
+        </div>
       </div>
       <div class="background">
         <span class="text">Аукционы автомобилей <br />с пробегом</span>
@@ -27,6 +29,7 @@
         <div class="line-5"></div>
         <span class="text-6">Быстро. Качественно. Доступно</span>
       </div>
+      <div class="main_content">
       <div class="flex-row-b">
         <span class="active-auction">Активных аукционов:</span><span class="number-auction">{{ auction_count }}</span>
       </div>
@@ -40,16 +43,21 @@
         <span class="low-price">{{ start_price }}</span><span class="top-price">{{ current_price }}</span>
         <span class="icon-7">₽</span><span class="icon-8">₽</span>
       </div>
-      <div class="rectangle-9" onclick="document.location='/test'">
+      <div class="rectangle-9" onclick="document.location='/auction?carid={{ auc_car_id }}'">
         <span class="text-view-mode">перейти в режим просмотра</span>
       </div>
       <span class="buy-used-car">Купить автомобиль с пробегом</span>
 
       <div class="flex-row-a">
         <div id="carouselTradeCars" class="carousel slide" data-interval="false" data-wrap="false">
-          <ol class="carousel-indicators">
-            <li data-target="#carouselTradeCars" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselTradeCars" data-slide-to="1"></li>
+          <ol class="carousel-indicators" style="top: 430px; filter: invert(100%);">
+            {% for i in range((((cars|length+1)/3)|round(method='ceil'))|int) %}
+              {% if loop.index0 == 0 %}
+                <li data-target="#carouselTradeCars" data-slide-to="0" class="active"></li>
+              {% else %}
+                <li data-target="#carouselTradeCars" data-slide-to="{{ loop.index0 }}"></li>
+              {% endif %}
+            {% endfor %}
           </ol>
           <div class="carousel-inner" style="height:450px">
             {% for car in cars %}
@@ -64,11 +72,13 @@
                   <div class="rectangle-a" style="--left: {{ tmp }}px;"></div>
                   <div class="car" style="--left: {{ tmp }}px; --img: url('{{ car['car_img'] }}');"></div>
                   
-                  <span id="car_name_{{loop.index0}}" class="car_car" style="--left: {{ tmp }}px">{{ car['car_brand'] }} {{ car['car_model'] }} {{ car['car_year'] }}</span>
-                  <span id="car_info_{{loop.index0}}" class="km-suv" style="--left: {{ tmp }}px">{{ car['main_info'] }}, <br />{{ car['addit_info'] }}</span>
+                  <div class="car_hui_parent">
+                    <span id="car_name_{{loop.index0}}" class="car_car" style="--left: {{ tmp }}px">{{ car['car_brand'] }} {{ car['car_model'] }} {{ car['car_year'] }}</span>
+                    <span id="car_info_{{loop.index0}}" class="km-suv" style="--left: {{ tmp }}px">{{ car['main_info'] }}, <br />{{ car['addit_info'] }}</span>
+                  </div>
                   
                   <script>
-                    document.getElementById("car_info_{{loop.index0}}").style.top = document.getElementById("car_name_{{loop.index0}}").getBoundingClientRect().height+184.422+"px"
+                    //document.getElementById("car_info_{{loop.index0}}").style.top = document.getElementById("car_name_{{loop.index0}}").getBoundingClientRect().height+184.422+"px"
                   </script>
 
                   <span class="price-12" style="--left: {{ tmp }}px">{{ car['price'] }}  <span class="icon-13" style="--left: {{ tmp }}px">  ₽</span>              
@@ -101,8 +111,10 @@
           </a>
         </div>
       </div>
+    </div>
 
-      <div class="rectangle-18">
+    <div class="rectangle-18">
+        <div class="footer">
         <span class="cars">Автомобили</span>
         <div class="flex-row-e">
           <span class="buy hover-class">Купить</span><span class="sell hover-class">Продать</span><span class="auction-19 hover-class">Аукцион</span>
@@ -119,7 +131,8 @@
           <div class="icon-1e"></div>
         </div>
       </div>
-      <div class="rectangle-1f">
+    </div>
+    <div class="rectangle-1f">
         <span class="text-20">© 2013-2024 Noblesse Oblige Автомобили с пробегом – официальный дилер в Москве. Обращаем Ваше внимание на то, что данный интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой. Характеристики и цены на автомобили с пробегом, указанные на сайте, приводятся в целях ознакомления потребителей с ориентировочной стоимостью авто. АО «Ноблессе облиге», ОГРН 1027700000151, ИНН 7705133757</span>
       </div>
     </div>
@@ -146,19 +159,10 @@ $(document).ready(function() {
     setInterval('show_close_time()', 1000);
 });
 
-  document.addEventListener('DOMContentLoaded', function () {
-    function toggleCarouselControl($slider, to) {
-      var $prev = $slider.find('[data-slide="prev"]');
-      var $next = $slider.find('[data-slide="next"]');
-      var displayPrev = to === 0 || to === undefined ? 'none' : 'flex';
-      var displayNext = to === $slider.find('.carousel-item').length - 1 ? 'none' : 'flex';
-      $prev.css('display', displayPrev);
-      console.log($prev)
-      $next.css('display', displayNext);
-    }
-    toggleCarouselControl($('#carouselTradeCars'));
-    $('#carouselTradeCars').on('slide.bs.carousel', function (e) {
-      toggleCarouselControl($(this), e.to);
-    });
-  });
+function toggleCarouselControl($slider, to) {
+  alert("hui");
+}
+$('#carouselTradeCars').on('slide.bs.carousel', function (e) {
+  toggleCarouselControl($(this), e.to);
+});
 </script>

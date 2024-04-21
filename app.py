@@ -1,16 +1,21 @@
 ﻿from flask import Flask
 from flask import render_template
-import index
 import ssl
 import logging
 import logging.handlers
 from datetime import date
+
+### Import BPs
+import index
+import auction.index as aucindex
+###
 
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain('cert/certificate.crt', 'cert/private.key')
 
 app = Flask(__name__)
 app.register_blueprint(index.bp)
+app.register_blueprint(aucindex.bp)
 
 
 @app.route('/.well-known/pki-validation/1FCC9AFF590712C8FF1FAF551AEC12FB.txt')

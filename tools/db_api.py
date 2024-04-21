@@ -233,7 +233,7 @@ class DBConnection:
             log.error(e)
 
 
-    def get_auc_car(self, id = None, limit = None, closed = False):
+    def get_auc_car(self, id = None, limit = None, closed = False, where = True):
         try:
             if id != None:
                 self.executeonce("""SELECT "Auction_cars".id, "Auction_cars".brand, "Auction_cars".model, "Auction_cars".color,
@@ -252,7 +252,7 @@ class DBConnection:
                                 """, {"id": id})
                 return dict(self.cur.fetchone())
             elif closed == False:
-                self.executeonce("""SELECT "Auction_cars".id, "Auction_cars".brand, "Auction_cars".model, "Auction_cars".color,
+                self.executeonce(f"""SELECT "Auction_cars".id, "Auction_cars".brand, "Auction_cars".model, "Auction_cars".color,
                                         "Auction_cars".year, "Auction_cars".vin, "Auction_cars".hp, "Auction_cars".mileage, "Auction_cars".tank_capacity,
                                         "Auction_cars".lenght, "Auction_cars".width, "Auction_cars".weight, "Auction_cars".engine_capacity, 
                                         "Auction_cars".rating, "Auction_cars".start_price, "Auction_cars".close_time,
@@ -267,10 +267,10 @@ class DBConnection:
                                         WHERE ((SELECT "action" FROM "Auction_history" WHERE "car_id" = "Auction_cars".id ORDER BY timestamp DESC LIMIT 1) != 'Sold'
                                                 OR (SELECT count("action") FROM (SELECT "action" FROM "Auction_history" WHERE "car_id" = "Auction_cars".id ORDER BY timestamp DESC LIMIT 1)) = 0)
                                         AND close_time > CURRENT_TIMESTAMP
-                                        ORDER BY close_time DESC LIMIT %(limit)s""", {"limit": limit})
+                                        AND {where} ORDER BY close_time ASC LIMIT %(limit)s""", {"limit": limit})
                 return list(map(dict, self.cur.fetchall()))
             else:
-                self.executeonce("""SELECT "Auction_cars".id, "Auction_cars".brand, "Auction_cars".model, "Auction_cars".color,
+                self.executeonce(f"""SELECT "Auction_cars".id, "Auction_cars".brand, "Auction_cars".model, "Auction_cars".color,
                                         "Auction_cars".year, "Auction_cars".vin, "Auction_cars".hp, "Auction_cars".mileage, "Auction_cars".tank_capacity,
                                         "Auction_cars".lenght, "Auction_cars".width, "Auction_cars".weight, "Auction_cars".engine_capacity, 
                                         "Auction_cars".rating, "Auction_cars".start_price, "Auction_cars".close_time,
@@ -282,7 +282,7 @@ class DBConnection:
                                         JOIN "Fuel_types" ON "Auction_cars".fuel_type = "Fuel_types".id
                                         JOIN "Body_types" ON "Auction_cars".body_type = "Body_types".id
                                         JOIN "Fuel_systems" ON "Auction_cars".fuel_system = "Fuel_systems".id
-                                        LIMIT %(limit)s""", {"limit": limit})
+                                        WHERE {where} LIMIT %(limit)s""", {"limit": limit})
                 return list(map(dict, self.cur.fetchall()))
         
         except Exception as e:

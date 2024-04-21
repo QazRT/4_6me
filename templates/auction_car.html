@@ -1,0 +1,88 @@
+﻿<div class="flex-row-fa">
+  <span class="fuel-type spec_name">Тип топлива</span><span class="variable-fuel-type">{{ fuel_type }}</span>
+  <span class="text">Участников:</span><span class="number-of-client">{{ part_count }}</span>
+</div>
+<div class="flex-row-a">
+  <span class="tank-volume spec_name">Объем бака (л)</span><span class="variable-tank-volume">{{ tank_capacity }}</span>
+  <span class="text-3">До завершения торгов:</span><span class="time-before" id="time_until_close"></span>
+</div>
+<div class="flex-row-e">
+  <div class="regroup">
+    <span class="length-width-weight spec_name">Длина/ширина/вес (мм/кг)</span><span class="variable-length-width-weight">{{ lenght }}/{{ width }}/{{ weight }}</span>
+  </div>
+  <span class="text-4">Дата и время окончания:</span><span class="time">{{ close_time }}</span>
+</div>
+<div class="flex-row-a-5">
+  <span class="name-auction">{{ brand }} {{ model }} {{ year }}</span>
+  <div class="outline-liked"></div>
+
+  <!-- <div class="photo-big-car"></div> -->
+
+  <div id="carouselCarImgs" class="carousel slide" data-ride="carousel" data-interval="10000" style="width: 464.541px; left: -20px; top: 40px;">
+    <ol class="carousel-indicators" style="top: 280px; filter: invert(100%);">
+      {% for i in range(imgs|length) %}
+        {% if loop.index0 == 0 %}
+          <li data-target="#carouselCarImgs" data-slide-to="0" class="active"></li>
+        {% else %}
+          <li data-target="#carouselCarImgs" data-slide-to="{{ loop.index0 }}"></li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+    <div class="carousel-inner">
+      {% for img in imgs %}
+        {% if loop.index0 == 0 %}
+          <div class="carousel-item active">
+            <div class="CarImg" style="--img: url('../cars_imgs/auc_cars/{{ id }}/{{ img }}');" loading="lazy"></div>
+          </div>
+        {% else %}
+          <div class="carousel-item">
+            <div class="CarImg" style="--img: url('../cars_imgs/auc_cars/{{ id }}/{{ img }}');" loading="lazy"></div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <a class="carousel-control-prev" href="#carouselCarImgs" role="button" data-slide="prev" style="filter: invert(100%); width: 55px; justify-content: flex-start">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselCarImgs" role="button" data-slide="next" style="filter: invert(100%); width: 55px; justify-content: flex-end">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+  <span class="text-characteristics">Характеристики</span>
+  <div class="line"></div>
+  <span class="rating spec_name">Рейтинг</span><span class="variable-rating">{{ rating }}</span>
+  <span class="run spec_name">Пробег</span><span class="variable-run">{{ mileage }} км</span>
+  <span class="kpp spec_name">КПП</span><span class="variable-kpp">{{ transmission }}</span>
+  <span class="car-body spec_name">Кузов</span><span class="variable-car-body">{{ body_type }}</span>
+  <span class="colour spec_name">Цвет</span><span class="variable-colour">{{ color }}</span>
+  <span class="drive-unit spec_name">Привод</span><span class="variable-drive-unit">{{ drive }}</span>
+</div>
+
+<div class="flex-row-c">
+  <div class="small-cars"></div>
+  <span class="vin spec_name">VIN</span><span class="variable-vin">{{ vin }}</span>
+  <span class="horse-power spec_name">Лошадиные силы</span><span class="variable-horse-power">{{ hp }}</span>
+</div>
+<div class="flex-row-c-b">
+  <div class="regroup-c">
+    <div class="rectangle-19">
+      <div class="flex-column-d">
+        <span class="text-11">Стартовая цена</span><span class="current-price">{{ start_price }}</span>
+      </div>
+      <span class="icon-12">₽</span>
+    </div>
+    <div class="rectangle-10">
+      <div class="flex-column-d">
+        <span class="text-11">Текущая цена</span><span class="current-price">{{ current_price }}</span>
+      </div>
+      <span class="icon-12">₽</span>
+    </div>
+    <span class="fuelsystem spec_name">Топливная система</span>
+  </div>
+  <abbr class="variablefuelsystem attr_class" title='{{ fuel_system }}'> {{ fuel_system }}</abbr>
+</div>
+
+<script> carid = {{id}} </script>
