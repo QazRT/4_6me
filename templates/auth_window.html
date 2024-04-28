@@ -1,0 +1,261 @@
+﻿<div id="login" class="rectangle-login">
+  <div class="auth-flex-row-a">
+    <div class="auth-rectangle-1" onclick="$('#register').attr('hidden', false); $('#login').attr('hidden', true)">
+      <span class="registration">Регистрация</span>
+    </div>
+    <span class="login">Вход</span>
+  </div>
+  <span class="login-2">Вход</span>
+  <div class="auth-flex-row-f">
+    <form id="LoginForm">
+      <div class="email_fields">
+        <input name="email" id="email" class="field" placeholder="Email" type="email" tabindex="1" />
+      </div>
+
+      <div class="fields">
+        <input name="password" id="password" class="field animation-class" placeholder="Password" type="password" minlength="8" tabindex="2" />
+        <div id="pass_view" class="eye-close-line animation-class">
+          <div class="auth-group" onmousedown="$('#password').attr('type', 'text')" onmouseup="$('#password').attr('type', 'password')"></div>
+        </div>
+
+        <div class="atom-30" id="Error" hidden="true">
+          <div class="auth-frame-31">
+            <div class="error"></div>
+            <div class="atom-32">
+              <span class="atom-description" id="Error_text">Error</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div id="LoginForm_sumbit" class="auth-rectangle-8 icon-class">
+    <span class="login-site" tabindex="3">Войти на сайт</span>
+  </div>
+  <div class="auth-rectangle-9">
+    <span id="CloseButton" class="close animation-class" data-dismiss="modal" tabindex="4">Закрыть</span>
+    <div class="auth-outlined-suggested-symbol"></div>
+  </div>
+</div>
+
+<div id="register" class="rectangle-a-reg" style="overflow: hidden;">
+  <div class="auth-flex-row-d">
+    <span class="registration-b">Регистрация</span>
+    <div class="auth-rectangle-c" onclick="$('#register').attr('hidden', true); $('#login').attr('hidden', false)">
+      <span class="login-d">Вход</span>
+    </div>
+  </div>
+
+  <span class="registration-e">Регистрация</span>
+  <form id="RegisterForm">
+    <div class="auth-flex-row-ccf">
+      <div class="auth-box-5">
+        <input id="reg_name" name="name" placeholder="Имя" class="button-fields-11 field" tabindex="5" />
+        <input id="reg_surname" name="surname" placeholder="Фамилия" class="button-fields-14 field" tabindex="6" />
+      </div>
+      <input id="reg_email" name="email" class="button-fields animation-class" type="email" placeholder="Email" tabindex="7" />
+      <div class="reg_email_error" id="Email_error" hidden>
+        <div class="auth-frame-31">
+          <div class="error"></div>
+          <div class="atom-32">
+            <span class="atom-description" id="Email_error_txt">Error</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-flex-row-fdd">
+      <div class="auth-fields-17">
+        <input name="password" id="reg_password" class="field animation-class" placeholder="Password" type="password" minlength="8" tabindex="8" />
+        <div id="reg_pass_view" class="eye-close-line-1c animation-class" onmousedown="$('#reg_password').attr('type', 'text')" onmouseup="$('#reg_password').attr('type', 'password')">
+          <div class="auth-group-1e"></div>
+        </div>
+      </div>
+
+      <input id="reg_phone" name="phone" class="auth-fields-1f field" placeholder="Телефон ([+7/8]9123456789)" tabindex="9" />
+      <div class="reg_email_error animation-class" id="Phone_error" hidden>
+        <div class="auth-frame-31">
+          <div class="error"></div>
+          <div class="atom-32">
+            <span class="atom-description" id="Phone_error_txt">Error</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <span class="password-minimum-8-characters">• пароль должен быть не менее 8 символов</span>
+  <div class="auth-rectangle-23 icon-class" id="RegisterForm_sumbit">
+    <span class="login-site-24" tabindex="10">Зарегистрироваться</span>
+  </div>
+  <div class="auth-rectangle-9">
+    <span id="RegCloseButton" class="close animation-class" data-dismiss="modal" tabindex="11">Закрыть</span>
+    <div class="auth-outlined-suggested-symbol"></div>
+  </div>
+</div>
+
+<script>
+  logged = false
+  
+  $(document).ready(function () {
+    $('#register').attr('hidden', true)
+  })
+  
+  $('#LoginForm_sumbit').click(function () {
+    if (
+      $('#password').val().length >= 8 &&
+      $('#email')
+        .val()
+        .match(/\w+@\w+\.\w+/).length == 1
+    ) {
+      $.post(
+        '/login', // адрес обработчика
+        $('#LoginForm').serialize(), // отправляемые данные
+  
+        function (msg) {
+          // получен ответ сервера
+          if (msg == 'False') {
+            $('#password').css('background', '#dc5f56')
+            $('#pass_view').css('background-color', '#dc5f56')
+            $('#pass_view').css('box-shadow', '0 0 3px 3px #dc5f56')
+            $('#Error_text').html('Wrong email or password!')
+            $('#Error').attr('hidden', false)
+          } else {
+            $('#password').css('background', '#f6d7d5')
+            $('#pass_view').css('background-color', '#f6d7d5')
+            $('#pass_view').css('box-shadow', '0 0 3px 3px #f6d7d5')
+            $('#Error').attr('hidden', true)
+            // Реальзуем вход
+            $('#CloseButton').click()
+            let params = new URLSearchParams(document.location.search)
+            if (params.get('auc') != null && params.get('auc') != '-1') {
+              document.location = '/auction?carid=' + params.get('auc')
+            } else if (parseInt(params.get('auc'), 10) == -1) {
+              document.location = '/auction'
+            }
+          }
+        }
+      )
+    } else {
+      $('#password').css('background', '#f6d7d5')
+      $('#pass_view').css('background-color', '#f6d7d5')
+      $('#pass_view').css('box-shadow', '0 0 3px 3px #f6d7d5')
+      $('#Error_text').html('Input correct email and password (at least 8 characters)')
+      $('#Error').attr('hidden', false)
+    }
+  })
+
+  $('#RegisterForm_sumbit').click(function () {
+    if (
+      $('#reg_name').val().length > 0 &&
+      $('#reg_surname').val().length > 0 &&
+      $('#reg_password').val().length >= 8 &&
+      $('#reg_email')
+        .val()
+        .match(/\w+@\w+\.\w+/) != null &&
+      $('#reg_phone')
+        .val()
+        .match(/\+?\d{11}/) != null &&
+      $('#reg_email')
+        .val()
+        .match(/\w+@\w+\.\w+/).length == 1 &&
+      $('#reg_phone')
+        .val()
+        .match(/\+?\d{11}/).length == 1
+    ) {
+      $.post(
+        '/register', // адрес обработчика
+        $('#RegisterForm').serialize(), // отправляемые данные
+  
+        function (msg) {
+          // получен ответ сервера
+          if (msg == 'False') {
+            $('#reg_email').css('background', '#dc5f56')
+            $('#Email_error_txt').html('Пользователь с такой почтой уже существует')
+            $('#Email_error').attr('hidden', false)
+          } else {
+            $('#reg_email').css('background', '#f6d7d5')
+            $('#Email_error').attr('hidden', true)
+            $('#reg_name').css('background', '#f6d7d5')
+            $('#reg_surname').css('background', '#f6d7d5')
+            $('#reg_password').css('background', '#f6d7d5')
+            $('#reg_pass_view').css('background-color', '#f6d7d5')
+            $('#reg_pass_view').css('box-shadow', '0 0 3px 3px #f6d7d5')
+            $('#reg_phone').css('background', '#f6d7d5')
+            $('#Phone_error').attr('hidden', true)
+            // вход
+            $('#RegCloseButton').click()
+            let params = new URLSearchParams(document.location.search)
+            if (params.get('auc') != null && params.get('auc') != '-1') {
+              document.location = '/auction?carid=' + params.get('auc')
+            } else if (parseInt(params.get('auc'), 10) == -1) {
+              document.location = '/auction'
+            }
+          }
+        }
+      )
+    } else {
+      if ($('#reg_name').val().length == 0) {
+        $('#reg_name').css('background', '#dc5f56')
+      } else {
+        $('#reg_name').css('background', '#f6d7d5')
+      }
+      if ($('#reg_surname').val().length == 0) {
+        $('#reg_surname').css('background', '#dc5f56')
+      } else {
+        $('#reg_surname').css('background', '#f6d7d5')
+      }
+  
+      if ($('#reg_password').val().length < 8) {
+        $('#reg_password').css('background', '#dc5f56')
+        $('#reg_pass_view').css('background-color', '#dc5f56')
+        $('#reg_pass_view').css('box-shadow', '0 0 3px 3px #dc5f56')
+      } else {
+        $('#reg_password').css('background', '#f6d7d5')
+        $('#reg_pass_view').css('background-color', '#f6d7d5')
+        $('#reg_pass_view').css('box-shadow', '0 0 3px 3px #f6d7d5')
+      }
+  
+      if (
+        $('#reg_email')
+          .val()
+          .match(/\w+@\w+\.\w+/) == null ||
+        $('#reg_email')
+          .val()
+          .match(/\w+@\w+\.\w+/).length != 1
+      ) {
+        $('#reg_email').css('background', '#dc5f56')
+        $('#Email_error_txt').html('Введите валидный email')
+        $('#Email_error').attr('hidden', false)
+      } else {
+        $('#reg_email').css('background', '#f6d7d5')
+        $('#Email_error').attr('hidden', true)
+      }
+  
+      if (
+        $('#reg_phone')
+          .val()
+          .match(/\+?\d{11}/) == null ||
+        $('#reg_phone')
+          .val()
+          .match(/\+?\d{11}/).length != 1
+      ) {
+        $('#reg_phone').css('background', '#dc5f56')
+        $('#Phone_error_txt').html('Введите валидный номер телефона')
+        $('#Phone_error').attr('hidden', false)
+      } else {
+        $('#reg_phone').css('background', '#f6d7d5')
+        $('#Phone_error').attr('hidden', true)
+      }
+    }
+  })
+
+  $(document).on('keypress',function(e) {
+    if (e.which == 13 && $('#register').attr('hidden') != 'hidden') {
+      $('#RegisterForm_sumbit').click()
+    } else if (e.which == 13 && $('#login').attr('hidden') != 'hidden') {
+      $('#LoginForm_sumbit').click()
+    }
+  });
+</script>

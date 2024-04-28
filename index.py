@@ -37,7 +37,7 @@ def home():
     cars = []
 
     conn = db.DBConnection()
-    cars_db = conn.get_trade_car()
+    cars_db = conn.get_trade_car(limit=8)
 
     try:
         auc_car = conn.get_auc_car(limit = 1)

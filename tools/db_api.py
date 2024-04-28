@@ -159,17 +159,17 @@ class DBConnection:
 
     def add_user(self, name, surname, 
                  phone_number, birthday, passkey,
-                 email = None, role = "User") -> dict:
+                 email, role = "User") -> dict:
         try:
             self.executeonce("""SELECT (SELECT COUNT(*) FROM "Users" 
-                             WHERE "Email" = %(email)s OR "Phone_number" = %(phone)s) = 0 as check""", 
-                             {"email":email, "phone":phone_number})
-            if self.fetchone["check"] == 0:
-                return {"status": False, "message": "Пользователь с такой почтой или телефоном уже зарегестрирован"}
+                             WHERE "Email" = %(email)s) = 0 as check""", 
+                             {"email":email})
+            if self.fetchone()["check"] == 0:
+                return {"status": False, "message": "Пользователь с такой почтой или телефоном уже зарегистрирован"}
                                                 
             if type(role) != int:
                 self.executeonce("SELECT id FROM public.\"Roles\" WHERE \"Name\" = %(role)s", {"role": role})
-                role = self.fetchone["id"]
+                role = self.fetchone()["id"]
             
             prompt = 'INSERT INTO public."Users"("Name", "Surname", "Phone_number", "Email", "Birthday", "Passkey", "Role_id")\
                         VALUES (%(name)s, %(surname)s, %(phone_number)s, %(email)s, %(birthday)s, %(passkey)s, %(role)s);'
@@ -288,7 +288,7 @@ class DBConnection:
         except Exception as e:
             log.error(e)
         
-    def get_trade_car(self, id = None):
+    def get_trade_car(self, id = None, limit=None):
         try:
             if id != None:
                 self.executeonce("""SELECT "Trade_cars".id, "Trade_cars".brand, "Trade_cars".model, "Trade_cars".color,
@@ -320,7 +320,7 @@ class DBConnection:
                         JOIN "Fuel_types" ON "Trade_cars".fuel_type = "Fuel_types".id
                         JOIN "Body_types" ON "Trade_cars".body_type = "Body_types".id
                         JOIN "Fuel_systems" ON "Trade_cars".fuel_system = "Fuel_systems".id
-                        JOIN "States" ON "Trade_cars".status = "States".id""")
+                        JOIN "States" ON "Trade_cars".status = "States".id LIMIT %(limit)s""", {"limit": limit})
                 return list(map(dict, self.cur.fetchall()))
         
         except Exception as e:
@@ -345,7 +345,7 @@ class DBConnection:
     
     def get_user_perms(self, user_id):
         try:
-            self.executeonce("""SELECT "Users"."id", "Roles"."Name", "Roles"."Allow_car_add", "Roles"."Allow_car_edit", 
+            self.executeonce("""SELECT "Users"."id", "Roles"."Name" as role, "Roles"."Allow_car_add", "Roles"."Allow_car_edit", 
                                     "Roles"."Allow_ext_car_view", "Roles"."Allow_manage_users"
                                     FROM "Roles" JOIN "Users" ON "Roles".id = "Users"."Role_id" WHERE "Users".id = %(id)s
                              """, {"id": user_id})
@@ -354,7 +354,7 @@ class DBConnection:
         except Exception as e:
             log.error(e)
 
-    def get_user(self, user_id):
+    def get_user_by_id(self, user_id):
         try:
             self.executeonce("""SELECT id, "Name", "Surname", "Phone_number", "Email", "Birthday", "Passkey" 
                              FROM public."Users" WHERE id = %(id)s""", {"id": user_id})
@@ -363,3 +363,11 @@ class DBConnection:
         except Exception as e:
             log.error(e)
     
+    def get_user(self, email, passkey):  
+        try:      
+            self.executeonce("WITH cte AS (SELECT * FROM \"Users\" WHERE \"Email\" = %(email)s AND \"Passkey\" = %(passkey)s) SELECT * FROM cte FULL JOIN (SELECT EXISTS(SELECT * FROM cte)) ON true;", {"email": email, "passkey": passkey})
+            res = self.fetchone()
+            return dict(res)
+        except Exception as e:
+            log.error(e)
+            return False

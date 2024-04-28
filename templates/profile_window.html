@@ -1,0 +1,20 @@
+﻿<div id="login" class="rectangle-login">
+  <a class="login-2" style="top:40%;">Юзер обнаружен!</a>
+  <a class="login-2" style="top:30%; font-size:large">Да-да, ты: {{ email }}</a>
+
+  <div id="Logout" class="auth-rectangle-8 icon-class" style="top: 65px;">
+    <span class="login-site" tabindex="3">Выйти из аккаунта</span>
+  </div>
+  <div class="auth-rectangle-9" style="top:50px">
+    <span id="CloseButton" class="close animation-class" data-dismiss="modal" tabindex="4">Закрыть</span>
+    <div class="auth-outlined-suggested-symbol"></div>
+  </div>
+</div>
+
+<script>
+  logged = true;
+  $('#Logout').click(function () {
+    document.cookie = 'token=none; max-age=-1'
+    $('#LoginModal').modal('hide')
+  })
+</script>

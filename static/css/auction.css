@@ -83,27 +83,6 @@ button {
     z-index: 88;
 } */
 
-.icon {
-    position: absolute;
-    width: 17.515px;
-    height: 17.505px;
-    top: 29.055px;
-    left: 892.584px;
-    background: url(../images/76f29d2d-a306-4e38-b01c-81af3cef42a2.png) no-repeat center;
-    background-size: 100% 100%;
-    z-index: 87;
-}
-
-.icon-1 {
-    position: absolute;
-    width: 15.5px;
-    height: 16.979px;
-    top: 29.25px;
-    left: 1259.25px;
-    background: url(../images/94e47918-b40b-4f43-9b49-73cf97c947d8.png) no-repeat center;
-    background-size: 100% 100%;
-    z-index: 84;
-}
 
 .ellipse {
     position: absolute;
@@ -135,13 +114,13 @@ button {
     position: relative;
     width: 860px;
     height: 72px;
-    margin: 6px 0 0 201px;
+    margin: 6px 0 7px 201px;
     color: #000000;
     font-family: Inter, var(--default-font-family);
-    font-size: 48px;
-    font-weight: 400;
+    font-size: 46px;
+    font-weight: 600;
     line-height: 62.544px;
-    text-align: center;
+    text-align: left;
     white-space: nowrap;
     z-index: 77;
 }
@@ -1280,45 +1259,6 @@ button {
     z-index: 112;
 }
 
-.phone-number {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    position: absolute;
-    height: 24px;
-    top: 26px;
-    left: 915px;
-    color: #000000;
-    font-family: Inter, var(--default-font-family);
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 24px;
-    text-align: left;
-    white-space: nowrap;
-    z-index: 111;
-}
-
-.icon {
-    position: absolute;
-    width: 17.515px;
-    height: 17.505px;
-    top: 29.055px;
-    left: 892.584px;
-    background: url(../images/b5896872-eaab-41a8-8379-f680837e3f59.png) no-repeat center;
-    background-size: 100% 100%;
-    z-index: 110;
-}
-
-.icon-1 {
-    position: absolute;
-    width: 15.5px;
-    height: 16.979px;
-    top: 29.25px;
-    left: 1259.25px;
-    background: url(../images/84a2fc0c-95ce-4989-9c45-1b4c6178fe56.png) no-repeat center;
-    background-size: 100% 100%;
-    z-index: 103;
-}
 
 .icon-2 {
     position: absolute;
@@ -1331,11 +1271,6 @@ button {
     z-index: 101;
 }
 
-.header_right {
-    position: absolute;
-    justify-content: right;
-    align-items: right;
-}
 
 .rectangle-18 {
     position: relative;

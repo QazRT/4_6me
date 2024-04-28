@@ -6,22 +6,26 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap" />
     <link rel="stylesheet" href="../static/css/home.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../static/css/global.css" />
+    <link rel="stylesheet" href="../static/css/auth_window_new.css" />
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
 
   </head>
   <body>
     <div class="main-container">
       <div class="rectangle">
         <div class="label icon-class" href="/"></div>
-        <div class="header_right">
-          <a class="phone-number hover-class" href="tel:+78165158148">+7 (816) 515-81-48</a>
-          <div class="icon"></div>
-          <div class="icon-1 icon-class"></div>
-          <!--<div class="icon-2 icon-class"></div> -->
-        </div>
+      </div>
+      <div class="header_right">
+        <a class="phone-number hover-class" href="tel:+78165158148">+7 (816) 515-81-48</a>
+        <div class="icon"></div>
+        <div id="profile_button" class="icon-1 icon-class" data-toggle="modal" data-target="#LoginModal"></div>
+        <!--<div class="icon-2 icon-class"></div> -->
       </div>
       <div class="background">
         <span class="text">Аукционы автомобилей <br />с пробегом</span>
@@ -137,11 +141,25 @@
       </div>
     </div>
 
+
+    <div class="modal fade" id="LoginModal" data-backdrop="static" tabindex="-1" aria-hidden="true" >
+      <div class="modal-dialog">
+        <div id="LoginModalContent" class="modal-content" style="left: -35%;">
+          <script> $.ajax({
+                  url: '/auth',
+                  type: "GET",
+                  dataType: "text",
+                  success: function(data) {
+                      $("#LoginModalContent").html(data);
+                  },
+              }); </script>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
   function show_close_time() {
     $.ajax({
@@ -154,15 +172,32 @@
     });
 }
 
+function show_auth_window() {
+  let params = new URLSearchParams(document.location.search);
+  if (params.get("auth") == "1") {
+    $('#LoginModal').modal('show')
+  }
+}
+
 $(document).ready(function() {
     show_close_time();
     setInterval('show_close_time()', 1000);
+    show_auth_window();
 });
 
-function toggleCarouselControl($slider, to) {
-  alert("hui");
-}
-$('#carouselTradeCars').on('slide.bs.carousel', function (e) {
-  toggleCarouselControl($(this), e.to);
+
+
+$('#LoginModal').on('show.bs.modal', function (event) {
+  $.ajax({
+    url: '/auth',
+    type: "GET",
+    dataType: "text",
+    success: function(data) {
+      console.log(data.match(/logged = \w+/)[0] == $("#LoginModalContent").html().match(/logged = \w+/)[0])
+        if (data.match(/logged = \w+/)[0] != $("#LoginModalContent").html().match(/logged = \w+/)[0]) {
+          $("#LoginModalContent").html(data);
+        }
+    },
 });
+})
 </script>

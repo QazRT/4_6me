@@ -6,19 +6,23 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap" />
     <link rel="stylesheet" href="../static/css/auction.css" />
+    <link rel="stylesheet" href="../static/css/global.css" />
+    <link rel="stylesheet" href="../static/css/auth_window_new.css" />
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
   <body>
     <div class="rectangle">
       <div class="label icon-class" onclick="document.location='/'"></div>
-      <div class="header_right">
-        <a class="phone-number hover-class" href="tel:+78165158148">+7 (816) 515-81-48</a>
-        <div class="icon"></div>
-        <div class="icon-1 icon-class"></div>
-      </div>
+    </div>
+    <div class="header_right">
+      <a class="phone-number hover-class" href="tel:+78165158148">+7 (816) 515-81-48</a>
+      <div class="icon"></div>
+      <div id="profile_button" class="icon-1 icon-class" data-toggle="modal" data-target="#LoginModal"></div>
     </div>
     <div class="main-container">
       <span class="auction-text">Аукцион автомобилей с пробегом</span>
@@ -55,15 +59,34 @@
     <div class="rectangle-1f">
       <span class="text-20">© 2013-2024 Noblesse Oblige Автомобили с пробегом – официальный дилер в Москве. Обращаем Ваше внимание на то, что данный интернет-сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой. Характеристики и цены на автомобили с пробегом, указанные на сайте, приводятся в целях ознакомления потребителей с ориентировочной стоимостью авто. АО «Ноблессе облиге», ОГРН 1027700000151, ИНН 7705133757</span>
     </div>
+
+    <div class="modal fade" id="LoginModal" data-backdrop="static" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div id="LoginModalContent" class="modal-content" style="left: -35%;">
+          <script>
+            $.ajax({
+              url: '/auth',
+              type: 'GET',
+              dataType: 'text',
+              success: function (data) {
+                $('#LoginModalContent').html(data)
+              }
+            })
+          </script>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-  let params = new URLSearchParams(window.location.search);
+  let params = new URLSearchParams(window.location.search)
   carid = params.get('carid')
-
+  
   function get_car(a) {
+    if (document.cookie.match(/token=\w+/) == null) {
+      document.location.replace('/?auth=1&auc=' + carid)
+    }
     $.ajax({
       url: '/get_car_card?' + a + '=' + carid,
       type: 'GET',
@@ -81,7 +104,7 @@
   
   function show_close_time() {
     $.ajax({
-      url: '/get_2close_time/'+carid,
+      url: '/get_2close_time/' + carid,
       type: 'GET',
       dataType: 'text',
       success: function (data) {
@@ -95,9 +118,32 @@
     setInterval('show_close_time()', 1000)
   })
   
-
   $(document).ready(function () {
     $('body,html').animate({ scrollTop: 75 }, 400)
   })
-  history.pushState(null, '', '/auction');
+  history.pushState(null, '', '/auction')
+  
+  $('#LoginModal').on('show.bs.modal', function (event) {
+    $.ajax({
+      url: '/auth',
+      type: 'GET',
+      dataType: 'text',
+      success: function (data) {
+        console.log(
+          data.match(/logged = \w+/)[0] ==
+            $('#LoginModalContent')
+              .html()
+              .match(/logged = \w+/)[0]
+        )
+        if (
+          data.match(/logged = \w+/)[0] !=
+          $('#LoginModalContent')
+            .html()
+            .match(/logged = \w+/)[0]
+        ) {
+          $('#LoginModalContent').html(data)
+        }
+      }
+    })
+  })
 </script>

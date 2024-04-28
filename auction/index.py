@@ -1,5 +1,6 @@
 ﻿import flask as fl
 import tools.db_api as db
+from tools.auth import AuthApi
 import logging as log
 from random import choice
 from datetime import datetime, timedelta, timezone
@@ -11,6 +12,18 @@ def pretty_price(price):
 
 @bp.route("/get_car_card")
 def auction_get_car():    
+    
+    user = AuthApi.is_loggged_in()
+    carid = fl.request.args.get('carid')
+    if user['status'] == False:
+        if carid != None:
+            res = fl.make_response(fl.redirect(f"/?auth=1&auc={carid}"), 403)
+        else:
+            res = fl.make_response(fl.redirect(f"/?auth=1&auc=-1"), 403)
+            
+        return res
+            
+    
     conn = db.DBConnection()
 
     try:
@@ -68,5 +81,16 @@ def auction_get_car():
     return res
 
 @bp.route("/auction")
-def auction_index():       
+def auction_index():
+    user = AuthApi.is_loggged_in()
+    carid = fl.request.args.get('carid')
+    if user['status'] == False:
+        if carid != None:
+            res = fl.make_response(fl.redirect(f"/?auth=1&auc={carid}"))
+        else:
+            res = fl.make_response(fl.redirect(f"/?auth=1&auc=-1"))
+            
+        
+        return res
+    
     return fl.render_template("auction.html")

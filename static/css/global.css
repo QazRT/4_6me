@@ -1,0 +1,107 @@
+﻿.hover-class:hover {
+    color: rgb(229, 91, 91);
+    cursor: pointer;
+}
+
+.hover-class {
+    -webkit-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -moz-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -o-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -ms-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.icon-class {
+    -webkit-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -moz-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -o-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -ms-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.animation-class {
+    -webkit-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -moz-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -o-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -ms-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.icon-class:hover {
+    filter: drop-shadow(0px 0px 5px rgb(229, 91, 91));
+    cursor: pointer;
+}
+
+
+::-webkit-scrollbar {
+    width: 7px;
+    /* ширина scrollbar */
+    height: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: #ffffff;
+    /* цвет дорожки */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #93261E;
+    /* цвет плашки */
+    border-radius: 15px;
+    /* закругления плашки */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #DC5F56;
+    /* цвет плашки */
+    border-radius: 15px;
+    /* закругления плашки */
+}
+
+.phone-number {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: absolute;
+    height: 24px;
+    top: 26px;
+    left: 23px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    white-space: nowrap;
+    z-index: 111;
+}
+
+.icon {
+    position: absolute;
+    width: 17.515px;
+    height: 17.505px;
+    top: 30.055px;
+    /* left: 892.584px; */
+    background: url(../images/b5896872-eaab-41a8-8379-f680837e3f59.png) no-repeat center;
+    background-size: 100% 100%;
+    z-index: 110;
+}
+
+.icon-1 {
+    position: absolute;
+    width: 15.5px;
+    height: 16.979px;
+    top: 29.25px;
+    right: 0px;
+    background: url(../images/84a2fc0c-95ce-4989-9c45-1b4c6178fe56.png) no-repeat center;
+    background-size: 100% 100%;
+    z-index: 103;
+}
+
+.header_right {
+    position: absolute;
+    top: 0px;
+    width: 35%;
+    height: 75px;
+    right: 50px;
+}
