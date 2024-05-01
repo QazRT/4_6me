@@ -9,6 +9,8 @@ from datetime import date
 import index
 import auction.index as aucindex
 import tools.auth as auth
+import trade.sale as sale
+import trade.car_details as cdet
 ###
 
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -18,11 +20,26 @@ app = Flask(__name__)
 app.register_blueprint(index.bp)
 app.register_blueprint(aucindex.bp)
 app.register_blueprint(auth.bp)
+app.register_blueprint(sale.bp)
+app.register_blueprint(cdet.bp)
 
 
 @app.route('/.well-known/pki-validation/1FCC9AFF590712C8FF1FAF551AEC12FB.txt')
 def cert():
   return open("cert.txt").read()
+
+@app.errorhandler(404)
+def error404(e):
+  return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def error500(e):
+  return render_template('500.html'), 500
+
+@app.errorhandler(403)
+def error403(e):
+  return render_template('403.html'), 403
+   
 
 if __name__ == '__main__':
   file_logger = logging.getLogger("")

@@ -129,7 +129,11 @@
             // Реальзуем вход
             $('#CloseButton').click()
             let params = new URLSearchParams(document.location.search)
-            if (params.get('auc') != null && params.get('auc') != '-1') {
+            if (params.get('sale') != null) {
+              document.location = '/sale'
+            } else if (params.get('trade_car') != null) {
+              document.location = '/trade_car/' + params.get('trade_car')
+            } else if (params.get('auc') != null && params.get('auc') != '-1') {
               document.location = '/auction?carid=' + params.get('auc')
             } else if (parseInt(params.get('auc'), 10) == -1) {
               document.location = '/auction'

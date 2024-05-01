@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 
 bp = fl.Blueprint("bp_file1", __name__)
 
-def pretty_price(price):
+def pretty_num(price):
     return f"{price:_}".replace('_',' ')
 
 @bp.route("/get_2close_time/<car_id>")
@@ -26,7 +26,7 @@ def get_trade_car():
     car_new["car_year"] = car["year"]
     car_new["main_info"] = f'{car["mileage"]}км, {car["hp"]}лс, {car["fuel_type"]}'
     car_new["addit_info"] = f'{car["transmission"]}, {car["body_type"]}'
-    car_new["price"] = pretty_price(car["price"])
+    car_new["price"] = pretty_num(car["price"])
     car_new["car_img"] = f'../cars_imgs/trade_cars/{car["id"]}/{conn.get_trade_car_pics(car["id"])[0]["pic_name"]}'
     return fl.render_template("get_trade_car_on_home.html", tmp=fl.request.args.get('tmp'), car=car_new, loop0=fl.request.args.get('loop0'))
 
@@ -61,8 +61,8 @@ def home():
         # auc_car_new["auc_car_until_close_time"] = f'{int(cl_time := (auc_car["close_time"]-datetime.now(tz=timezone(timedelta(hours=3.0)))).total_seconds())//86400}д {int(cl_time-(cl_time//86400)*86400)//3600}ч {int(cl_time-(cl_time//86400)*86400-((cl_time-(cl_time//86400)*86400)//3600)*3600)//60}м'
         auc_car_new["auc_car_close_date"] = auc_car["close_time"].strftime("%d.%m.%Y %H:%M")
         auc_car_new["participants_count"] = 0 if part_count == None else part_count["count"]
-        auc_car_new["start_price"] = pretty_price(auc_car["start_price"])
-        auc_car_new["current_price"] = pretty_price(auc_car["start_price"]+(curr_price if curr_price!= None else 0))
+        auc_car_new["start_price"] = pretty_num(auc_car["start_price"])
+        auc_car_new["current_price"] = pretty_num(auc_car["start_price"]+(curr_price if curr_price!= None else 0))
         auc_car_new["auc_car_img"] = f'../cars_imgs/auc_cars/{auc_car["id"]}/{conn.get_auc_car_pics(auc_car["id"])[0]["pic_name"]}'
         
     
@@ -73,14 +73,15 @@ def home():
             car_new["car_brand"] = car["brand"]
             car_new["car_model"] = car["model"]
             car_new["car_year"] = car["year"]
-            car_new["main_info"] = f'{car["mileage"]}км, {car["hp"]}лс, {car["fuel_type"]}'
+            car_new["main_info"] = f'{pretty_num(car["mileage"])} км, {pretty_num(car["hp"])} л.с., {car["fuel_type"]}'
             car_new["addit_info"] = f'{car["transmission"]}, {car["body_type"]}'
-            car_new["price"] = pretty_price(car["price"])
+            car_new["price"] = pretty_num(car["price"])
             car_new["car_img"] = f'../cars_imgs/trade_cars/{car["id"]}/{conn.get_trade_car_pics(car["id"])[0]["pic_name"]}'
             cars.append(car_new)
         
     except Exception as e:
         log.error(f"INDEX (/): {e}")
+        fl.abort(500)
         
     return fl.render_template("home.html", cars=cars, **auc_car_new, auction_count=auction_count)
 
@@ -98,3 +99,11 @@ def test():
         # conn.add_auc_car(body_type="Седан")
         name = "world"
     return fl.render_template("test.html", name=name, option=methods)
+
+@bp.route("/error/<error_id>")
+def error_example(error_id):
+    if error_id in ['403', '404', '500']:
+        return fl.render_template(f"{error_id}.html")
+    else:
+        return fl.render_template(f"403.html")
+        

@@ -1,0 +1,19 @@
+﻿{% for car in cars %}
+    {% set tmp = loop.index0 % 3 %}
+    {% if tmp == 0 %}
+        <div class="flex-row">
+    {% endif %}
+    <div class="car" style="--left: {{ tmp }}px;" onclick="document.location='/trade_car/{{ car['id'] }}'">
+        <div class="background-of-car"></div>
+        <div class="photo-car" style="--img: url('{{ car['car_img'] }}');"></div>
+        <div class="car_desc">
+        <span class="name-of-car">{{ car['car_brand'] }} {{ car['car_model'] }} {{ car['car_year'] }}</span>
+        <span class="specs">{{ car['main_info'] }}, <br />{{ car['addit_info'] }}</span>
+        </div>
+        <span class="price">{{ car['price'] }} <span class="rub-icon">₽</span>
+        </span>
+    </div>
+    {% if tmp == 2 or loop.last%}
+        </div>
+    {% endif %}
+{% endfor %}

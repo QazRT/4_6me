@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 
 bp = fl.Blueprint("bp_file2", __name__)
 
-def pretty_price(price):
+def pretty_num(price):
     return f"{price:_}".replace('_',' ')
 
 @bp.route("/get_car_card")
@@ -61,10 +61,11 @@ def auction_get_car():
         conn.executeonce("SELECT COUNT(action) FROM public.\"Auction_history\" WHERE car_id=%(car_id)s GROUP BY action, car_id HAVING action='Bet';", {"car_id": auc_car["id"]})
         part_count = conn.fetchone()
         curr_price = conn.get_auc_car_price(auc_car["id"])
+        auc_car["mileage"] = pretty_num(auc_car["mileage"])
         auc_car["part_count"] = 0 if part_count == None else part_count["count"]
         auc_car["close_time"] = auc_car["close_time"].strftime("%d.%m.%Y %H:%M")
-        auc_car["current_price"] = pretty_price(auc_car["start_price"]+(curr_price if curr_price != None else 0))
-        auc_car["start_price"] = pretty_price(auc_car["start_price"])
+        auc_car["current_price"] = pretty_num(auc_car["start_price"]+(curr_price if curr_price != None else 0))
+        auc_car["start_price"] = pretty_num(auc_car["start_price"])
         auc_car["fuel_type"] = auc_car["fuel_type"] if auc_car["fuel_qual"] == None else f'{auc_car["fuel_type"]} (АИ-{auc_car["fuel_qual"]})'
 
         imgs = list(i["pic_name"] for i in conn.get_auc_car_pics(auc_car["id"]))
@@ -73,7 +74,8 @@ def auction_get_car():
             
     except Exception as e:
         log.error(e)
-        
+        fl.abort(500)
+
         
     res = fl.make_response(fl.render_template("auction_car.html", **auc_car, imgs=imgs))
     res.set_cookie("prevcars", ','.join(map(str, prevcars)))

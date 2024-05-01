@@ -14,7 +14,7 @@
 <script>
   logged = true;
   $('#Logout').click(function () {
-    document.cookie = 'token=none; max-age=-1'
+    document.cookie = 'token=none; max-age=-1; path=/'
     $('#LoginModal').modal('hide')
   })
 </script>

@@ -98,6 +98,7 @@ def register():
 
     except Exception as e:
         log.error(e)
+        fl.abort(500)
 
 
 @bp.route("/login", methods=["POST"])

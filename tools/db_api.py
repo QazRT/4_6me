@@ -1,5 +1,6 @@
 ﻿import psycopg2
 import psycopg2.extras 
+from psycopg2.extensions import AsIs
 import json
 import logging as log
 
@@ -288,7 +289,7 @@ class DBConnection:
         except Exception as e:
             log.error(e)
         
-    def get_trade_car(self, id = None, limit=None):
+    def get_trade_car(self, id = None, limit=None, sortby="id", all=False):
         try:
             if id != None:
                 self.executeonce("""SELECT "Trade_cars".id, "Trade_cars".brand, "Trade_cars".model, "Trade_cars".color,
@@ -307,6 +308,23 @@ class DBConnection:
                                         WHERE "Trade_cars".id = %(id)s
                                 """, {"id": id})
                 return dict(self.cur.fetchone())
+            elif (all == False):
+                self.executeonce("""SELECT "Trade_cars".id, "Trade_cars".brand, "Trade_cars".model, "Trade_cars".color,
+                        "Trade_cars".year, "Trade_cars".vin, "Trade_cars".hp, "Trade_cars".mileage, "Trade_cars".tank_capacity,
+                        "Trade_cars".lenght, "Trade_cars".width, "Trade_cars".weight, "Trade_cars".engine_capacity, 
+                        "Trade_cars".rating, "Trade_cars".price,
+                        "Transmissions".name as transmission, "Drives".name as drive, "Fuel_types".name as fuel_type, "Fuel_types".quality as fuel_qual,
+                        "Body_types".name as body_type, "Fuel_systems".name as fuel_system, "States".title as status
+                        FROM PUBLIC."Trade_cars"
+                        JOIN "Transmissions" ON "Trade_cars".transmission = "Transmissions".id
+                        JOIN "Drives" ON "Trade_cars".drive = "Drives".id
+                        JOIN "Fuel_types" ON "Trade_cars".fuel_type = "Fuel_types".id
+                        JOIN "Body_types" ON "Trade_cars".body_type = "Body_types".id
+                        JOIN "Fuel_systems" ON "Trade_cars".fuel_system = "Fuel_systems".id
+                        JOIN "States" ON "Trade_cars".status = "States".id
+                        WHERE "Trade_cars".status = 1 ORDER BY %(sortby)s LIMIT %(limit)s""",
+                        {"sortby": AsIs(sortby), "limit": limit})
+                return list(map(dict, self.cur.fetchall()))
             else:
                 self.executeonce("""SELECT "Trade_cars".id, "Trade_cars".brand, "Trade_cars".model, "Trade_cars".color,
                         "Trade_cars".year, "Trade_cars".vin, "Trade_cars".hp, "Trade_cars".mileage, "Trade_cars".tank_capacity,
@@ -320,7 +338,9 @@ class DBConnection:
                         JOIN "Fuel_types" ON "Trade_cars".fuel_type = "Fuel_types".id
                         JOIN "Body_types" ON "Trade_cars".body_type = "Body_types".id
                         JOIN "Fuel_systems" ON "Trade_cars".fuel_system = "Fuel_systems".id
-                        JOIN "States" ON "Trade_cars".status = "States".id LIMIT %(limit)s""", {"limit": limit})
+                        JOIN "States" ON "Trade_cars".status = "States".id
+                        ORDER BY %(sortby)s LIMIT %(limit)s""",
+                        {"sortby": AsIs(sortby), "limit": limit})
                 return list(map(dict, self.cur.fetchall()))
         
         except Exception as e:
