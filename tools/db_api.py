@@ -98,7 +98,7 @@ class DBConnection:
             fuel_type = None, body_type = None, mileage = None,
             tank_capacity = None, lenght = None, width = None,
             weight = None, engine_capacity = None, rating = None,
-            fuel_system = None, price = 0, status = None) -> dict:
+            fuel_system = None, price = 0, status = 1) -> dict:
 
         try:
             if type(body_type) != int and body_type != None:
@@ -120,8 +120,8 @@ class DBConnection:
                 self.executeonce("SELECT id FROM public.\"States\" WHERE name = %(status)s", {"status": status})
                 status = self.fetchone["id"]
                 
-            prompt = 'INSERT INTO public."Auction_cars"(brand, model, color, year, transmission, vin, hp, drive, fuel_type, body_type, mileage, tank_capacity, lenght, width, weight, engine_capacity, rating, fuel_system, price, status)\
-                        VALUES (%(brand)s, %(model)s, %(color)s, %(year)s, %(transmission)s, %(vin)s, %(hp)s, %(drive)s, %(fuel_type)s, %(body_type)s, %(mileage)s, %(tank_capacity)s, %(lenght)s, %(width)s, %(weight)s, %(engine_capacity)s, %(rating)s, %(fuel_system)s, %(price)s, %(status)s);'
+            prompt = 'INSERT INTO public."Trade_cars"(brand, model, color, year, transmission, vin, hp, drive, fuel_type, body_type, mileage, tank_capacity, lenght, width, weight, engine_capacity, rating, fuel_system, price, status)\
+                        VALUES (%(brand)s, %(model)s, %(color)s, %(year)s, %(transmission)s, %(vin)s, %(hp)s, %(drive)s, %(fuel_type)s, %(body_type)s, %(mileage)s, %(tank_capacity)s, %(lenght)s, %(width)s, %(weight)s, %(engine_capacity)s, %(rating)s, %(fuel_system)s, %(price)s, %(status)s) RETURNING id;'
             self.executeonce( prompt, {"brand": brand, "model": model, "color": color,
                                         "year": year, "transmission": transmission, "vin": vin,
                                         "hp": hp, "drive": drive, "fuel_type": fuel_type,
@@ -129,7 +129,8 @@ class DBConnection:
                                         "lenght": lenght, "width": width, "weight": weight,
                                         "engine_capacity": engine_capacity, "rating": rating, "fuel_system": fuel_system,
                                         "price": price, "status": status})
-            return {"status": True, "message": "Successfully added new car"}
+
+            return {"status": True, "message": f"{self.fetchone()['id']}"}
             
         except Exception as e:
             log.error(e)

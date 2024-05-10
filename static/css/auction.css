@@ -30,6 +30,7 @@ button {
     left: -138px;
     height: 720px;
     margin: 0 auto;
+    margin-bottom: -50px;
     background: #ffffff;
     overflow: hidden;
 }

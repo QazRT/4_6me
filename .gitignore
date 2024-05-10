@@ -8,3 +8,4 @@ logs/*
 tools/db_creds.json
 auction/__pycache__/*
 trade/__pycache__/*
+admin/__pycache__/*

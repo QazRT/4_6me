@@ -1,0 +1,405 @@
+﻿<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noblesse Sale</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../static/css/trade_car_details.css" />
+    <link rel="stylesheet" href="../static/css/global.css" />
+    <link rel="stylesheet" href="../static/css/auth_window_new.css" />
+    <link rel="stylesheet" href="../static/css/edit_car.css" />
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="rectangle">
+      <div class="label icon-class" onclick="document.location='/'"></div>
+    </div>
+    <div class="header_right">
+      <a class="phone-number hover-class" href="tel:+78165158148">+7 (816) 515-81-48</a>
+      <div class="icon"></div>
+      <div id="profile_button" class="icon-1 icon-class" data-toggle="modal" data-target="#LoginModal"></div>
+    </div>
+
+    <form id="AddForm">
+      <input name="car_id" value="{{ id }}" hidden />
+      <input name="files[]" id="uploaded_imgs" type="file" accept="image/png,image/jpg,image/jpeg" multiple hidden />
+      <div id="main_container" class="main-container animation-class">
+        <div class="flex-row-dfff">
+          <a class="main hover-class" href="/sale">Главная</a><span class="divider">/</span><span class="toyota-chr">{{ brand }} {{ model }} {{ year }}</span>
+        </div>
+        <div class="flex-row-ab">
+          <div id="carouselCarImgs" class="carousel slide" data-ride="carousel" data-interval="10000" style="width: 684.541px; left: 20px; top: 4px;">
+            <ol id="smallpreview" class="carousel-indicators" style="height: fit-content; top: 345px; ">
+              {% for img in imgs %}
+                <img data-target="#carouselCarImgs" data-slide-to="{{ loop.index0 }}" class="CarImgSmall animation-class" srcset="/static/cars_imgs/{{ addto }}_cars/{{ id }}/{{ img }}" loading="lazy" />
+              {% endfor %}
+
+              <div id="dropContainer_small" class="CarImgSmall active animation-class" data-target="#carouselCarImgs" data-slide-to="">
+                <div class="add-small-car">
+                  <div class="outlined-suggested-symbol"></div>
+                  <span class="add">add</span>
+                  <div class="field-add-small-car"></div>
+                </div>
+              </div>
+            </ol>
+            <div id="preview" class="carousel-inner" style="left:40px; width: 620px;">
+              {% for img in imgs %}
+                <div class="carousel-item">
+                  <div class="CarImg" style="--img: url('../cars_imgs/{{ addto }}_cars/{{ id }}/{{ img }}');" loading="lazy"></div>
+                </div>
+              {% endfor %}
+
+              <div id="dropContainer" class="carousel-item active">
+                <div class="big-field-upload-small-car animation-class" onclick="$('#uploaded_imgs').click()" ondragover="$('#dropContainer').css('filter', 'brightness(80%)'); event.preventDefault();" ondragleave="$('#dropContainer').css('filter', 'brightness(100%)')">
+                  <div class="big-vector-upload"></div>
+                  <div class="big-text-upload">
+                    <span class="drop-files-upload">Drop files here to upload or <span class="browse">Browse</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a class="carousel-control-prev animation-class" href="#carouselCarImgs" role="button" data-slide="prev" style="filter: invert(100%); width: 95px; justify-content: flex-start; z-index: 190;">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next animation-class" href="#carouselCarImgs" role="button" data-slide="next" style="filter: invert(100%); width: 95px; justify-content: flex-end; z-index: 190;">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+
+          <div id="scroll" class="scroll animation-class">
+            <div class="main-enter">
+              <span class="text-main-enter">Введите компанию, модель <br />и год выпуска автомобиля:</span>
+              <div class="flex-row-ca">
+                {% if brand == 'New' %}
+                  <input name="brand" aria-controls="false" placeholder="Марка" class="input-rectangle-scroll" style="width: 110px" />
+                {% else %}
+                  <input value="{{ brand }}" name="brand" aria-controls="false" placeholder="Марка" class="input-rectangle-scroll" style="width: 120px" />
+                {% endif %}
+                <input value="{{ model }}" name="model" aria-controls="false" placeholder="Модель" class="input-rectangle-scroll" style="width: 200px" />
+                <input value="{{ year }}" name="year" oninput="this.value=this.value.replace(/[^\d]*/gi, '');" aria-controls="false" placeholder="Год" class="input-rectangle-scroll" style="width: 80px" />
+              </div>
+            </div>
+
+            <div>
+              <div class="flex-row-ad">
+                <input id="addto_input" name="addto" value="trade" hidden />
+                <span class="sort-by-text">Автомобиль на:</span>
+                <div id="car2auc" class="bg-sort animation-class">
+                  <span class="sort-text">Аукцион</span>
+                </div>
+                <div id="car2trade" class="bg-sort animation-class" active>
+                  <span class="sort-text">Продажу</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="enter-price">
+              <span id="price-text" class="price">Цена:</span>
+              <input value="{{ price }}" name="price" placeholder="Введите цену" class="input-rectangle" style="left:255px; width: 160px" />
+            </div>
+            <div id="time-out-input" class="enter-time-out" hidden>
+              <span class="text-time-out">Время окончания:</span>
+              <input value="{{ close_time }}" name="close_time" type="datetime-local" min="" step="300" placeholder="Введите время" class="input-rectangle" style="left:205px; width: 210px" />
+            </div>
+            <div id="savebtn" class="btn-buy icon-class" onclick="save();">
+              <div class="bg-btn-buy"></div>
+              <span class="text-btn-buy">Сохранить</span>
+            </div>
+            <div id="error" class="auth-frame-31" hidden>
+              <div class="error"></div>
+              <div class="atom-32">
+                <span class="atom-description" id="Error_txt">Error</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <span class="text-characteristics">Характеристики</span>
+        <div class="flex-row-ef">
+          <span class="rating">Рейтинг</span>
+          <input value="{{ rating }}" name="rating" maxlength="1" placeholder="Введите одну букву" class="input-rectangle" />
+        </div>
+        <div class="flex-row-a">
+          <span class="run">Пробег</span>
+          <input value="{{ mileage }}" name="mileage" oninput="this.value=this.value.replace(/[^\d]*/gi, '');" min="0" aria-controls="false" placeholder="Введите цифру" class="input-rectangle" />
+        </div>
+        <div class="flex-row-a">
+          <span class="kpp">КПП</span>
+          <select name="transmission" class="select-rectangle animation-class">
+            <option selected disabled>Выберите КПП</option>
+            {% for opt in trans %}
+              {% if opt['name'] == transmission %}
+                <option selected value="{{ opt['id'] }}">{{ opt['name'] }}</option>
+              {% else %}
+                <option value="{{ opt['id'] }}">{{ opt['name'] }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="flex-row-a">
+          <span class="car-body">Кузов</span>
+          <select name="body_type" title="Выберите" class="select-rectangle animation-class">
+            <option selected disabled>Выберите тип кузова</option>
+            {% for opt in body_types %}
+              {% if opt['name'] == body_type %}
+                <option selected value="{{ opt['id'] }}">{{ opt['name'] }}</option>
+              {% else %}
+                <option value="{{ opt['id'] }}">{{ opt['name'] }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="flex-row-a">
+          <span class="colour">Цвет</span>
+          <input value="{{ color }}" name="color" placeholder="Введите цвет" class="input-rectangle" />
+        </div>
+        <div class="flex-row-a">
+          <span class="drive-unit">Привод</span>
+          <select name="drive" title="Выберите" class="select-rectangle animation-class">
+            <option selected disabled>Выберите привод</option>
+            {% for opt in drives %}
+              {% if opt['name'] == drive %}
+                <option selected value="{{ opt['id'] }}">{{ opt['name'] }}</option>
+              {% else %}
+                <option value="{{ opt['id'] }}">{{ opt['name'] }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="flex-row-a">
+          <span class="vin-b">VIN</span>
+          <input value="{{ vin }}" name="vin" maxlength="17" oninput="this.value=this.value.replace(/[^\w\d]*/gi, '').toUpperCase();" placeholder="Введите VIN" class="input-rectangle" />
+        </div>
+        <div class="flex-row-a">
+          <span class="horse-power">Лошадиные силы</span>
+          <input value="{{ hp }}" name="hp" min="1" aria-controls="false" placeholder="Введите" class="input-rectangle" oninput="this.value=this.value.replace(/[^\d]*/gi, '');" />
+        </div>
+        <div class="flex-row-a">
+          <span class="fuel-system">Топливная система</span>
+          <select name="fuel_system" title="Выберите" class="select-rectangle animation-class">
+            <option selected disabled>Выберите топливную систему</option>
+            {% for opt in fuel_systems %}
+              {% if opt['name'] == fuel_system %}
+                <option selected value="{{ opt['id'] }}">{{ opt['name'] }}</option>
+              {% else %}
+                <option value="{{ opt['id'] }}">{{ opt['name'] }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="flex-row-a">
+          <span class="fuel-type">Тип топлива</span>
+          <select name="fuel_type" title="Выберите" class="select-rectangle animation-class">
+            <option selected disabled>Выберите тип топлива</option>
+            {% for opt in fuel_types %}
+              {% if opt['name'].split(' ')[0] == fuel_type %}
+                <option selected value="{{ opt['id'] }}">{{ opt['name'] }}</option>
+              {% else %}
+                <option value="{{ opt['id'] }}">{{ opt['name'] }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="flex-row-a">
+          <span class="tank-volume">Объем бака (л)</span>
+          <input value="{{ tank_capacity }}" name="tank_capacity" maxlength="3" aria-controls="false" placeholder="Введите" class="input-rectangle" oninput="this.value=this.value.replace(/[^\d]*/gi, '');" />
+        </div>
+        <div class="flex-row-e-13">
+          <span class="length-width-weight">Длина/ширина/вес (мм/кг)</span>
+          <input value="{{ lenght }}" name="lenght" maxlength="6" aria-controls="false" placeholder="Длина" class="input-rectangle-small" oninput="this.value=this.value.replace(/[^\d]*/gi, '');" />
+          <a style="position: relative; left: 302px; font-size: larger;">/</a>
+          <input value="{{ width }}" name="width" maxlength="6" aria-controls="false" placeholder="Ширина" class="input-rectangle-small" oninput="this.value=this.value.replace(/[^\d]*/gi, '');" />
+          <a style="position: relative; left: 302px; font-size: larger;">/</a>
+          <input value="{{ weight }}" name="weight" maxlength="6" aria-controls="false" placeholder="Вес" class="input-rectangle-small" oninput="this.value=this.value.replace(/[^\d]*/gi, '');" />
+        </div>
+      </div>
+    </form>
+
+    {% include 'footer.html' %}
+
+    <div class="modal fade" id="LoginModal" data-backdrop="static" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div id="LoginModalContent" class="modal-content" style="left: -35%;">
+          <script>
+            $.ajax({
+              url: '/auth',
+              type: 'GET',
+              dataType: 'text',
+              success: function (data) {
+                $('#LoginModalContent').html(data)
+              }
+            })
+          </script>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    {% if id == None %}
+      $('#car2auc').click(function () {
+        if ($('#car2auc').attr('active') == null) {
+          $('#car2auc').attr('active', true)
+          $('#car2trade').attr('active', null)
+          $('#time-out-input').attr('hidden', null)
+          $('#price-text').text('Начальная цена:')
+          $('#addto_input').val('auc')
+        }
+      })
+      $('#car2trade').click(function () {
+        if ($('#car2trade').attr('active') == null) {
+          $('#car2auc').attr('active', null)
+          $('#car2trade').attr('active', true)
+          $('#time-out-input').attr('hidden', true)
+          $('#price-text').text('Цена:')
+          $('#addto_input').val('trade')
+        }
+      })
+    {% endif %}
+    
+    let params = new URLSearchParams(document.location.search)
+    if (params.get('addto') == 'auc') {
+      $('#car2auc').click()
+    }
+    
+    $('#main_container').css('opacity', '0%')
+    $(document).ready(function () {
+      $('#main_container').css('opacity', '100%')
+      $('#dropContainer_small').attr('data-slide-to', document.getElementById('smallpreview').childElementCount - 1)
+    })
+    
+    position = $(window).scrollTop()
+    $(window).scroll(function () {
+      scroll = $(window).scrollTop()
+      check = Math.ceil($('#main_container').height()) - Math.ceil($('#scroll').offset().top) - Math.ceil($('#scroll').height())
+      if (scroll > position) {
+        if (check > 0) {
+          $('#scroll').css('top', $(window).scrollTop() + 'px')
+        } else {
+          console.log(check, Math.ceil($('#scroll').offset().top) + 3 * check)
+          $('#scroll').css('top', Math.ceil($('#scroll').offset().top) + 2 * check + 'px')
+        }
+      } else if (scroll < position) {
+        if (Math.ceil($('#scroll').offset().top) - $(window).scrollTop() > 160) {
+          $('#scroll').css('top', $(window).scrollTop() + 'px')
+        }
+      }
+      position = scroll
+    })
+    
+    $('#LoginModal').on('show.bs.modal', function (event) {
+      $.ajax({
+        url: '/auth',
+        type: 'GET',
+        dataType: 'text',
+        success: function (data) {
+          console.log(
+            data.match(/logged = \w+/)[0] ==
+              $('#LoginModalContent')
+                .html()
+                .match(/logged = \w+/)[0]
+          )
+          if (
+            data.match(/logged = \w+/)[0] !=
+            $('#LoginModalContent')
+              .html()
+              .match(/logged = \w+/)[0]
+          ) {
+            $('#LoginModalContent').html(data)
+          }
+        }
+      })
+    })
+    
+    $('#uploaded_imgs').change(function () {
+      view_files()
+    })
+    
+    function view_files() {
+      if (window.FormData === undefined) {
+        alert('В вашем браузере FormData не поддерживается')
+      } else {
+        $.each($('#uploaded_imgs')[0].files, function (key, file) {
+          var preview = document.getElementById('preview')
+          var smallpreview = document.getElementById('smallpreview')
+          //console.log(preview.childElementCount)
+          var divimg = document.createElement('div')
+          var img = document.createElement('img')
+          var smallimg = document.createElement('img')
+    
+          divimg.appendChild(img)
+    
+          //$('#dropContainer').removeClass('active')
+    
+          divimg.classList.add('carousel-item')
+          img.classList.add('CarImg')
+          smallimg.classList.add('CarImgSmall', 'animation-class')
+          smallimg.setAttribute('data-target', '#carouselCarImgs')
+          smallimg.setAttribute('data-slide-to', smallpreview.childElementCount - 1)
+    
+          img.file = file
+          smallimg.file = file
+          smallpreview.appendChild(smallimg)
+          preview.appendChild(divimg)
+    
+          $('#dropContainer_small').attr('data-slide-to', smallpreview.childElementCount - 1)
+    
+          smallpreview.appendChild(document.getElementById('dropContainer_small'))
+          preview.appendChild(document.getElementById('dropContainer'))
+    
+          var reader = new FileReader()
+          reader.onload = (function (aImg1, aImg2) {
+            return function (e) {
+              aImg1.src = e.target.result
+              aImg2.src = e.target.result
+            }
+          })(img, smallimg)
+          reader.readAsDataURL(file)
+    
+          //formData.append('file[]', file)
+        })
+      }
+    }
+    
+    $('#dropContainer').on('drop', function (e) {
+      e.preventDefault()
+      $('#dropContainer').css('filter', 'brightness(100%)')
+      document.getElementById('uploaded_imgs').files = e.originalEvent.dataTransfer.files
+      view_files()
+      //console.log(document.getElementById('uploaded_imgs').files);
+    })
+    
+    function save() {
+      console.log($('#AddForm').serialize())
+      let data = new FormData($('#AddForm')[0])
+    
+      $.ajax({
+        url: '/add_car',
+        type: 'POST',
+        data: data,
+        processData: false,
+        contentType: false,
+        success: function (r) {
+          console.log('success', r)
+          if (r['status'] == false) {
+            $('#error').attr('hidden', false)
+            $('#Error_txt').text(r['message'])
+          } else if (r['status'] == true) {
+            document.location = '/sale'
+          }
+        },
+        error: function (r) {
+          console.log('error', r)
+        }
+      })
+    }
+  </script>
+</html>

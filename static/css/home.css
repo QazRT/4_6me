@@ -108,7 +108,7 @@ button {
   /* margin: 0 0 0 -171px; */
   background: url(../images/intro3.png)
     no-repeat center;
-  background-size: 128% ;
+  background-size: 128%;
   z-index: 93;
   /* justify-content: left;
   align-items: left; */
@@ -402,12 +402,13 @@ button {
 .buyout-price {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   position: absolute;
-  width: 155px;
+  width: 169px;
   height: 32px;
-  top: 133px;
-  left: 624px;
+  /* top: 133px;
+  left: 624px; */
+  top: -5px;
   color: #000000;
   font-family: Inter, var(--default-font-family);
   font-size: 16px;
@@ -419,12 +420,13 @@ button {
 .start-price {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   position: absolute;
-  width: 128px;
+  width: 169px;
   height: 32px;
-  top: 133px;
-  left: 462px;
+  top: -5px;
+  /* top: 133px;
+  left: 462px; */
   color: #000000;
   font-family: Inter, var(--default-font-family);
   font-size: 16px;
@@ -436,12 +438,12 @@ button {
 .low-price {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   position: absolute;
-  width: 125px;
+  width: 165px;
   height: 40px;
-  top: 166px;
-  left: 462px;
+  top: 20px;
+  /* left: 462px; */
   color: #000000;
   font-family: Inter, var(--default-font-family);
   font-size: 20px;
@@ -453,18 +455,19 @@ button {
 .top-price {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   position: absolute;
-  width: 124.126px;
+  width: 165px;
   height: 40px;
-  top: 166px;
-  left: 624px;
+  top: 20px;
+  /* top: 166px;
+  left: 624px; */
   color: #000000;
   font-family: Inter, var(--default-font-family);
   font-size: 20px;
   font-weight: 700;
   line-height: 24.205px;
-  text-align: left;
+  text-align: center;
   z-index: 74;
 }
 .icon-7 {
@@ -474,8 +477,8 @@ button {
   position: absolute;
   width: 31px;
   height: 40px;
-  top: 166px;
-  left: 748px;
+  /* top: 1px; */
+  right: 0px;
   color: #000000;
   font-family: Inter, var(--default-font-family);
   font-size: 20px;
@@ -514,6 +517,7 @@ button {
   border-radius: 15px;
 }
 .rectangle-9:hover {
+  filter: invert(10%);
   cursor: pointer;
 }
 
@@ -533,6 +537,7 @@ button {
   text-align: center;
   z-index: 66;
 }
+
 .buy-used-car {
   display: block;
   position: relative;
@@ -749,6 +754,39 @@ button {
   z-index: 55;
   border-radius: 15px;
 }
+
+.red-price-decor {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  width: 169px;
+  height: 56px;
+  top: 143px;
+  left: 674px;
+  border-right: 3px solid #92261e;
+  border-left: 3px solid #92261e;
+  z-index: 19;
+  border-radius: 15px;
+}
+
+.grey-price-decor {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  width: 169px;
+  height: 56px;
+  top: 143px;
+  left: 474px;
+  border-right: 3px solid rgba(90, 92, 105, 0.70);
+  border-left: 3px solid rgba(90, 92, 105, 0.70);
+  z-index: 19;
+  border-radius: 15px;
+}
+
 .owner {
   display: flex;
   align-items: flex-start;

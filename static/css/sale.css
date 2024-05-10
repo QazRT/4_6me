@@ -37,15 +37,15 @@ button {
 .used-cars {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
     position: relative;
     width: 860px;
     height: 72px;
-    margin: 30px 0 0 193px;
+    margin: 30px 0 0 243px;
     color: #000000;
     font-family: Inika, var(--default-font-family);
     font-size: 48px;
-    font-weight: 400;
+    font-weight: 600;
     line-height: 62.544px;
     text-align: center;
     white-space: nowrap;
@@ -700,10 +700,74 @@ button {
     width: 300px;
     /* height: 400px; */
 }
+
 .car:hover {
     cursor: pointer;
 }
 
+.editbtn {
+    position: absolute;
+    right: 20px;
+    top: 355px;
+    height: 30px;
+    width: 30px;
+    background: #9b9b9b;
+    border-radius: 5px;
+    z-index: 1000;
+    padding: 4px;
+    padding-top: 2.5px;
+}
+
+.deletebtn {
+    position: absolute;
+    right: 55px;
+    top: 355px;
+    height: 30px;
+    width: 30px;
+    background: #DC5F56;
+    border-radius: 5px;
+    z-index: 1000;
+    padding: 4px;
+    padding-top: 2.5px;
+}
+
+.show-more-plus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 300px;
+    height: 399px;
+    top: -10px;
+    /* left: calc(330*var(--left) + 38.052px); */
+    /* color: #741c1c; */
+    font-family: Inter, var(--default-font-family);
+    font-size: 76px;
+    font-weight: 100;
+    line-height: 16.943px;
+    text-align: center;
+    z-index: 40;
+    border-radius: 15px;
+}
+
+.show-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 300px;
+    height: 399px;
+    top: 40px;
+    /* left: calc(330*var(--left) + 38.052px); */
+    /* color: #741c1c; */
+    font-family: Inter, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 16.943px;
+    text-align: center;
+    z-index: 40;
+    border-radius: 15px;
+}
 
 /* LOADING */
 

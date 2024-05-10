@@ -11,6 +11,7 @@ import auction.index as aucindex
 import tools.auth as auth
 import trade.sale as sale
 import trade.car_details as cdet
+import admin.edit_car as cedit
 ###
 
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -22,7 +23,10 @@ app.register_blueprint(aucindex.bp)
 app.register_blueprint(auth.bp)
 app.register_blueprint(sale.bp)
 app.register_blueprint(cdet.bp)
+app.register_blueprint(cedit.bp)
 
+
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 
 @app.route('/.well-known/pki-validation/1FCC9AFF590712C8FF1FAF551AEC12FB.txt')
 def cert():
@@ -45,7 +49,7 @@ if __name__ == '__main__':
   file_logger = logging.getLogger("")
   file_logger.setLevel(logging.DEBUG)
   fl_handler = logging.handlers.RotatingFileHandler(filename=f"logs/{date.today().strftime('%Y-%m-%d')}.log",
-                                                    maxBytes=5000000, backupCount=24, mode='a', encoding='utf-8')
+                                                    maxBytes=1500000, backupCount=24, mode='a', encoding='utf-8')
   fl_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
   file_logger.addHandler(fl_handler)
   
