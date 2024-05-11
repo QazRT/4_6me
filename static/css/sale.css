@@ -717,6 +717,9 @@ button {
     padding: 4px;
     padding-top: 2.5px;
 }
+.editbtn:hover {
+    opacity: 85%;
+}
 
 .deletebtn {
     position: absolute;
@@ -729,6 +732,9 @@ button {
     z-index: 1000;
     padding: 4px;
     padding-top: 2.5px;
+}
+.deletebtn:hover {
+    opacity: 85%;
 }
 
 .show-more-plus {

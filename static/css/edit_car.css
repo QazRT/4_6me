@@ -736,3 +736,43 @@ option:hover {
     white-space: nowrap;
     z-index: 77;
 }
+
+.state-tumbl {
+    position: absolute;
+    left: calc(var(--tumblleft) + 25px );
+    width: 85px;
+    height: 35px;
+    border: solid 2px #93261E;
+    border-radius: 15px;
+}
+
+.tumbl-element {
+    position: relative;
+    height: 35px;
+    top: 3px;
+    left: 4px;
+    cursor: pointer;
+}
+
+
+.tumbl-select {
+    position: absolute;
+    /* top: 1px; */
+    /* left: 1px; */
+    width: 30px;
+    height: 100%;
+    border-radius: 13px;
+}
+
+.tumbl-select.solded {
+    left: 0px;
+    background-color: #cd6159;
+}
+.tumbl-select.hided {
+    left: 26px;
+    background-color: #d3d3d3;
+}
+.tumbl-select.normal {
+    left: 52px;
+    background-color: #8ccc33;
+}

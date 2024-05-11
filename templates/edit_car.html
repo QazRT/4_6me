@@ -31,7 +31,44 @@
       <input name="files[]" id="uploaded_imgs" type="file" accept="image/png,image/jpg,image/jpeg" multiple hidden />
       <div id="main_container" class="main-container animation-class">
         <div class="flex-row-dfff">
-          <a class="main hover-class" href="/sale">Главная</a><span class="divider">/</span><span class="toyota-chr">{{ brand }} {{ model }} {{ year }}</span>
+          <a id="path_main" class="main hover-class" href="/sale">Главная</a><span class="divider">/</span><span id="path_car_name" class="toyota-chr">{{ brand }} {{ model }} {{ year }}</span>
+          <div id="state-tumbl" class="state-tumbl">
+            <input id="state_input" name="state" value="{{ state }}" hidden/>
+            <div id="tumbl-select" class="tumbl-select animation-class normal"></div>
+            <a id="tumbl-sold" class="tumbl-element">❌</a>
+            <a id="tumbl-hide" class="tumbl-element">🙈</a>
+            <a id="tumbl-normal" class="tumbl-element">👁</a>
+            <script>
+              $('#tumbl-sold').click(function() {
+                $('#tumbl-select').removeClass('normal')
+                $('#tumbl-select').removeClass('hided')
+                $('#tumbl-select').addClass('solded')
+                $('#state_input').val('3')
+              })
+              $('#tumbl-hide').click(function() {
+                $('#tumbl-select').removeClass('normal')
+                $('#tumbl-select').removeClass('solded')
+                $('#tumbl-select').addClass('hided')
+                $('#state_input').val('2')
+              })
+              $('#tumbl-normal').click(function() {
+                $('#tumbl-select').removeClass('solded')
+                $('#tumbl-select').removeClass('hided')
+                $('#tumbl-select').addClass('normal')
+                $('#state_input').val('1')
+              })
+
+              if ({{state}} == '1') {
+                $('#tumbl-normal').click()
+              }
+              else if ({{state}} == '2') {
+                $('#tumbl-hide').click()
+              }
+              else if ({{state}} == '3') {
+                $('#tumbl-sold').click()
+              }
+            </script>
+          </div>
         </div>
         <div class="flex-row-ab">
           <div id="carouselCarImgs" class="carousel slide" data-ride="carousel" data-interval="10000" style="width: 684.541px; left: 20px; top: 4px;">
@@ -252,6 +289,7 @@
           $('#time-out-input').attr('hidden', null)
           $('#price-text').text('Начальная цена:')
           $('#addto_input').val('auc')
+          $('#state-tumbl').attr('hidden', true)
         }
       })
       $('#car2trade').click(function () {
@@ -261,19 +299,26 @@
           $('#time-out-input').attr('hidden', true)
           $('#price-text').text('Цена:')
           $('#addto_input').val('trade')
+          $('#state-tumbl').attr('hidden', null)
         }
       })
     {% endif %}
     
     let params = new URLSearchParams(document.location.search)
     if (params.get('addto') == 'auc') {
-      $('#car2auc').click()
+      $('#car2auc').attr('active', true)
+      $('#car2trade').attr('active', null)
+      $('#time-out-input').attr('hidden', null)
+      $('#price-text').text('Начальная цена:')
+      $('#addto_input').val('auc')
+      $('#state-tumbl').attr('hidden', true)
     }
     
     $('#main_container').css('opacity', '0%')
     $(document).ready(function () {
       $('#main_container').css('opacity', '100%')
       $('#dropContainer_small').attr('data-slide-to', document.getElementById('smallpreview').childElementCount - 1)
+      $('#state-tumbl').css('--tumblleft', $('#path_main').width() + $('#path_car_name').width()+'px')
     })
     
     position = $(window).scrollTop()
