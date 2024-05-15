@@ -37,7 +37,7 @@
             <a id="path_main" class="main hover-class" href="/sale">Главная</a><span class="divider">/</span><span id="path_car_name" class="toyota-chr">{{ brand }} {{ model }} {{ year }}</span>
           {% endif %}
           <input id="state_input" name="state" value="{{ state }}" hidden/>
-          <div id="state-tumbl" class="state-tumbl">
+          <div id="state-tumbl" class="state-tumbl animation-class">
             <div id="tumbl-select" class="tumbl-select animation-class normal"></div>
             <a id="tumbl-sold" class="tumbl-element">❌</a>
             <a id="tumbl-hide" class="tumbl-element">🙈</a>
@@ -325,11 +325,17 @@
       //$('#state-tumbl').attr('hidden', true)
     }
     
+
+    $('#state-tumbl').css('opacity', '0%')
     $('#main_container').css('opacity', '0%')
     $(document).ready(function () {
       $('#main_container').css('opacity', '100%')
       $('#dropContainer_small').attr('data-slide-to', document.getElementById('smallpreview').childElementCount - 1)
-      $('#state-tumbl').css('--tumblleft', $('#path_main').width() + $('#path_car_name').width()+'px')
+      setTimeout(function() {
+        $('#state-tumbl').css('--tumblleft', $('#path_main').width() + $('#path_car_name').width()+'px')
+        $('#state-tumbl').css('opacity', '100%')
+      }, 100);
+      //$('#state-tumbl').css('--tumblleft', $('#path_main').width() + $('#path_car_name').width()+'px')
     })
     
     position = $(window).scrollTop()

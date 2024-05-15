@@ -554,6 +554,10 @@ option:hover {
     line-height: 20.848px;
     text-align: center;
     z-index: 14;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 
 .big-field-upload-small-car {
