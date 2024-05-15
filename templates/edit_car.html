@@ -36,8 +36,8 @@
           {% else %}
             <a id="path_main" class="main hover-class" href="/sale">Главная</a><span class="divider">/</span><span id="path_car_name" class="toyota-chr">{{ brand }} {{ model }} {{ year }}</span>
           {% endif %}
+          <input id="state_input" name="state" value="{{ state }}" hidden/>
           <div id="state-tumbl" class="state-tumbl">
-            <input id="state_input" name="state" value="{{ state }}" hidden/>
             <div id="tumbl-select" class="tumbl-select animation-class normal"></div>
             <a id="tumbl-sold" class="tumbl-element">❌</a>
             <a id="tumbl-hide" class="tumbl-element">🙈</a>
@@ -69,7 +69,14 @@
                 $('#tumbl-hide').click()
               }
               else if ({{state}} == '3') {
-                $('#tumbl-sold').click()
+                if ('{{ addto }}' == 'auc') {
+                  $('#state_input').val('3')
+                  $('#state-tumbl').css('background', '#93261E')
+                  $('#state-tumbl').html("<a class='tumbl-element' style='color: white; font-size: 17px; font-weight: 600; top:2.5px; left: 5px; cursor: auto;'>Продано</a>")
+                }
+                else {
+                  $('#tumbl-sold').click()
+                }
               }
             </script>
           </div>
@@ -293,7 +300,7 @@
           $('#time-out-input').attr('hidden', null)
           $('#price-text').text('Начальная цена:')
           $('#addto_input').val('auc')
-          $('#state-tumbl').attr('hidden', true)
+          //$('#state-tumbl').attr('hidden', true)
         }
       })
       $('#car2trade').click(function () {
@@ -303,7 +310,7 @@
           $('#time-out-input').attr('hidden', true)
           $('#price-text').text('Цена:')
           $('#addto_input').val('trade')
-          $('#state-tumbl').attr('hidden', null)
+          //$('#state-tumbl').attr('hidden', null)
         }
       })
     {% endif %}
@@ -315,7 +322,7 @@
       $('#time-out-input').attr('hidden', null)
       $('#price-text').text('Начальная цена:')
       $('#addto_input').val('auc')
-      $('#state-tumbl').attr('hidden', true)
+      //$('#state-tumbl').attr('hidden', true)
     }
     
     $('#main_container').css('opacity', '0%')

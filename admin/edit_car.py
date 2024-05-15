@@ -53,6 +53,7 @@ def delete_auc_car(car_id):
     try:
         conn = db.DBConnection()
         conn.executeonce("""
+                         DELETE FROM public."Auction_history" WHERE car_id = %(car_id)s;
                          DELETE FROM public."Auction_car_imgs" WHERE car_id = %(car_id)s;
                          DELETE FROM public."Auction_cars" WHERE id = %(car_id)s;
                          """, {"car_id": car_id})
@@ -245,9 +246,7 @@ def add_car():
                     return res
 
             elif i[0] == "state":
-                if addto == "auc":
-                    continue
-                elif i[1].isdigit() and int(i[1]) in [1, 2, 3]:
+                if i[1].isdigit() and int(i[1]) in [1, 2, 3]:
                     specs["status"] = int(i[1])
                 else:
                     res = fl.make_response({"status": False, "message": "Ты че, мышь"})
@@ -287,12 +286,37 @@ def add_car():
             if car_id == None:
                 specs["start_price"] = specs["price"]
                 del specs["price"]
+                
+                status = specs["status"]
+                del specs["status"]
+                
                 add_res = conn.add_auc_car(**specs)
                 carid = int(add_res["message"])
+                
+                
+                if status == 1:
+                    status = db.AucActions.UNHIDE
+                elif status == 2:
+                    status = db.AucActions.HIDE
+                elif status == 3:
+                    status = db.AucActions.SOLD
+                
+                car_status = conn.get_auc_car_status(car_id=carid)
+                
+                if status != (car_status if car_status != None else db.AucActions.UNHIDE):
+                    try:
+                        if status == db.AucActions.HIDE:
+                            conn.set_auc_car_status(user_id=user['message']['id'], car_id=carid, status=db.AucActions.HIDE)
+                        elif status == db.AucActions.SOLD:
+                            conn.set_auc_car_status(user_id=user['message']['id'], car_id=carid, status=db.AucActions.SOLD)
+                    except:
+                        pass
+                
                 mkdir(f"static/cars_imgs/{addto}_cars/{carid}")
                 for i in imgs:
                     i.save(f"static/cars_imgs/{addto}_cars/{carid}/{i.filename}")
                 conn.add_pics_2_auc_car([i.filename for i in imgs], carid)
+                
             else:
                 specs["car_id"] = car_id
                 conn.executeonce(
@@ -305,6 +329,28 @@ def add_car():
                             weight = %(weight)s, rating = %(rating)s,
                             fuel_system = %(fuel_system)s, start_price = %(price)s, close_time = %(close_time)s WHERE id = %(car_id)s""", specs,
                 )
+                
+                
+                if specs["status"] == 1:
+                    specs["status"] = db.AucActions.UNHIDE
+                elif specs["status"] == 2:
+                    specs["status"] = db.AucActions.HIDE
+                elif specs["status"] == 3:
+                    specs["status"] = db.AucActions.SOLD
+                
+                car_status = conn.get_auc_car_status(car_id=car_id)
+                
+                if specs["status"] != (car_status if car_status != None else db.AucActions.UNHIDE):
+                    try:
+                        if specs["status"] == db.AucActions.UNHIDE and car_status != None:
+                            conn.set_auc_car_status(user_id=user["message"]["id"], car_id=car_id, status=db.AucActions.UNHIDE)
+                        elif specs["status"] == db.AucActions.HIDE:
+                            conn.set_auc_car_status(user_id=user["message"]["id"], car_id=car_id, status=db.AucActions.HIDE)
+                        elif specs["status"] == db.AucActions.SOLD:
+                            conn.set_auc_car_status(user_id=user["message"]["id"], car_id=car_id, status=db.AucActions.SOLD)
+                    except:
+                        pass
+                
                 if not exists(f"static/cars_imgs/{addto}_cars/{car_id}"):
                     mkdir(f"static/cars_imgs/{addto}_cars/{car_id}")
                 for i in imgs:
@@ -361,7 +407,16 @@ def edit_car(car_id=None):
                 car["price"] = car["start_price"]
 
                 imgs = list(i["pic_name"] for i in conn.get_auc_car_pics(car_id=car_id))
-                status = None
+                
+                status = conn.get_auc_car_status(car_id=car_id)
+                if status == None or status == db.AucActions.UNHIDE:
+                    status = 1
+                elif status == db.AucActions.HIDE:
+                    status = 2
+                elif status == db.AucActions.SOLD:
+                    status = 3
+                
+                
             else:
                 car = conn.get_trade_car(id=int(car_id))
                 imgs = list(

@@ -54,6 +54,7 @@ def get_auc_cars():
             curr_price = conn.get_auc_car_price(car_new["id"])
             car_new["close_time"] = car["close_time"].strftime("%d.%m.%Y %H:%M")
             car_new["current_price"] = pretty_num(car["start_price"]+(curr_price if curr_price != None else 0))
+            car_new["status"] = conn.get_auc_car_status(car_id=car["id"])
             cars.append(car_new)
 
         conn.close()

@@ -4,9 +4,9 @@
         <div class="flex-row">
     {% endif %}
     <div id="car_{{ car['id'] }}" class="car zoom-class" style="--left: {{ tmp }}px;" onclick="document.location='/auction?carid={{ car['id'] }}'">
-        {% if car['status'] == 'Скрыто' %}
+        {% if car['status'] == 'Hide' %}
             <div class="background-of-car" style="background: #d3d3d3;"></div>
-        {% elif car['status'] == 'Продано' %}
+        {% elif car['status'] == 'Sold' %}
             <div class="background-of-car" style="background: #cd6159;"></div>
         {% else %}
             <div class="background-of-car"></div>
