@@ -87,7 +87,6 @@ def register():
         
         
         res = AuthApi.reg_user(name, surname, phone_number, birthday, password, email)
-        log.warn(res)
         # log.warn(f"{res['message']['Email']} {res['message']['Passkey']}".encode())
         if res['status'] == False:
             return 'False'

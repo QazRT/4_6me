@@ -95,9 +95,12 @@ def bet_car(carid):
         conn = db.DBConnection()
                
         if int(fl.request.form.get('userprice')) - int(conn.get_auc_car_current_price(car_id=carid)) >= 1000:
-            conn.set_auc_car_status(car_id=carid, user_id=user["message"]["id"],
-                                        action=db.AucActions.BET,
-                                        action_info=str(int(fl.request.form.get('userprice')) - int(conn.get_auc_car_current_price(car_id=carid))))
+            if int(fl.request.form.get('userprice')) < 2**31-1:
+                conn.set_auc_car_status(car_id=carid, user_id=user["message"]["id"],
+                                            status=db.AucActions.BET,
+                                            comment=str(int(fl.request.form.get('userprice')) - int(conn.get_auc_car_current_price(car_id=carid))))
+            else:
+                return 'False'
         
         else:
             return 'False'

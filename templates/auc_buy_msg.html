@@ -16,23 +16,29 @@
 
 <script>
   function send_req() {
-    $('#CongratModalContent').css('opacity', '0%')
-    $('#CongratModalContent').css('left', '-35%')
+
     $.post(
       '/bet_car/' + carid, // адрес обработчика
       $('#user_price').serialize(), // отправляемые данные
   
       function (msg) {
         // получен ответ сервера
-        $.ajax({
-          url: '/ready_auc_congrat',
-          type: 'GET',
-          dataType: 'text',
-          success: function (data) {
-            $('#CongratModalContent').html(data)
-            $('#CongratModalContent').css('opacity', '100%')
-          }
-        })
+        if (msg == 'False') {
+          $('#user_price').css('background', '#DC5F56')
+        }
+        else {
+          $('#CongratModalContent').css('opacity', '0%')
+          $('#CongratModalContent').css('left', '-35%')
+          $.ajax({
+            url: '/ready_auc_congrat',
+            type: 'GET',
+            dataType: 'text',
+            success: function (data) {
+              $('#CongratModalContent').html(data)
+              $('#CongratModalContent').css('opacity', '100%')
+            }
+          })
+        }
       }
     )
   }
@@ -97,7 +103,7 @@
     font-size: 30px;
     font-weight: 700;
     line-height: 48.409px;
-    left: 60px;
+    left: 71px;
     top: 10px;
     text-align: center;
     z-index: 3;
@@ -155,7 +161,7 @@
     left: 0;
     color: #ffffff;
     font-family: Inika, var(--default-font-family);
-    font-size: 36px;
+    font-size: 27px;
     font-weight: 700;
     line-height: 46.908px;
     text-align: center;

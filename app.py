@@ -36,6 +36,7 @@ app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 app.config["MAIL_SERVER"] = "smtp.nobless-oblige.ru"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
+app.config["SESSION_COOKIE_SECURE"] = True
 app.config["MAIL_USERNAME"] = "noreply@nobless-oblige.ru"
 app.config["MAIL_DEFAULT_SENDER"] = "noreply@nobless-oblige.ru"
 app.config["MAIL_PASSWORD"] = "password"

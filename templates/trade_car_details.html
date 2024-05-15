@@ -80,10 +80,15 @@
               <div class="bg-btn-buy"></div>
               <span class="text-btn-buy">Купить</span>
             </div>
+          {% elif status == 'Скрыто' %}
+            <div class="btn-buy" style="cursor: auto">
+              <div class="bg-btn-buy disabled"></div>
+              <span class="text-btn-buy">Бронь</span>
+            </div>
           {% else %}
             <div class="btn-buy" style="cursor: auto">
               <div class="bg-btn-buy disabled"></div>
-              <span class="text-btn-buy">Хуй тебе</span>
+              <span class="text-btn-buy">Продано</span>
             </div>
           {% endif %}
         </div>

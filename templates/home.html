@@ -103,8 +103,8 @@
                   {% set tmp = (loop.index)%3 %}
                   <div>
                     <div class="btn" style="--left: {{tmp}}px; border-radius: 15px; border: 1px solid #6b6b6b; background: #F6D7D5;" onclick="document.location='/sale'"></div>
-                      <span class="show-more-plus" style="--left: 1px; border-radius: 15px;" onclick="document.location='/sale'">▢▢<br>▢▢</span>
-                      <span class="show-more" style="--left: 1px; border-radius: 15px;" onclick="document.location='/sale'">Посмотреть ещё</span>
+                      <span class="show-more-plus" style="--left: {{tmp}}px; border-radius: 15px;" onclick="document.location='/sale'">▢▢<br>▢▢</span>
+                      <span class="show-more" style="--left: {{tmp}}px; border-radius: 15px;" onclick="document.location='/sale'">Посмотреть ещё</span>
                     </div>
                   </div>
             {% endif %}

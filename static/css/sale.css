@@ -717,6 +717,10 @@ button {
     z-index: 1000;
     padding: 4px;
     padding-top: 2.5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 .editbtn:hover {
     opacity: 85%;
@@ -733,6 +737,10 @@ button {
     z-index: 1000;
     padding: 4px;
     padding-top: 2.5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 .deletebtn:hover {
     opacity: 85%;
