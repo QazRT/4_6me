@@ -1,7 +1,10 @@
 ﻿import flask as fl
+from flask_mail import Message
 import tools.db_api as db
 import logging as log
+from tools.auth import AuthApi
 from datetime import datetime, timedelta, timezone
+
 
 bp = fl.Blueprint("bp_file1", __name__)
 
@@ -13,6 +16,7 @@ def get_2close_time(car_id):
     conn = db.DBConnection()
     conn.executeonce("SELECT * FROM \"Auction_cars\" WHERE id=%(id)s", {"id": car_id})
     auc_car = dict(conn.fetchone())
+    conn.close()
     return f'{int(cl_time := (auc_car["close_time"]-datetime.now(tz=timezone(timedelta(hours=3.0)))).total_seconds())//86400}д {int(cl_time-(cl_time//86400)*86400)//3600}ч {int(cl_time-(cl_time//86400)*86400-((cl_time-(cl_time//86400)*86400)//3600)*3600)//60}м {int(cl_time-(cl_time//86400)*86400-((cl_time-(cl_time//86400)*86400)//3600)*3600-(((cl_time-(cl_time//86400)*86400)//3600)*3600)//60)%60}c'
 
 @bp.route("/get_trade_car")
@@ -106,4 +110,59 @@ def error_example(error_id):
         return fl.render_template(f"{error_id}.html")
     else:
         return fl.render_template(f"403.html")
+
+@bp.route("/auc_congrat/<car_id>")
+def auc_congrat(car_id = None):
+    user = AuthApi.is_loggged_in()
+    if user["status"] == False:
+        return fl.redirect(f"/?auth=1")
+       
+    if car_id.isdigit() == False:
+        return fl.render_template("404.html")
+    
+    try:
+        conn = db.DBConnection()
+        price = conn.get_auc_car_current_price(car_id=int(car_id))
+        log.error(price)
+    except Exception as e:
+        log.error(e)
+        return fl.render_template("500.html")
+    finally:
+        conn.close()
         
+    return fl.render_template("auc_buy_msg.html", curr_price=price+1000)
+
+@bp.route("/congrat/<carid>")
+def congrat(carid):
+    user = AuthApi.is_loggged_in()
+    if user["status"] == False:
+        return fl.redirect(f"/?auth=1")
+    
+    if carid.isdigit() == False:
+        return fl.render_template("404.html")
+           
+    try:
+        conn = db.DBConnection()
+        
+        conn.executeonce("SELECT status FROM public.\"Trade_cars\" WHERE id = %(id)s", {"id": carid})
+        status = conn.fetchone()["status"]
+        
+        if status == 1:
+            conn.executeonce("""UPDATE public."Trade_cars" SET status=2 WHERE id=%(car_id)s""", {"car_id": carid})
+            emsg = Message("Запрос на покупку авто", recipients=['managers@nobless-oblige.ru'])
+            emsg.html = fl.render_template("buy_mail.html", user=user['message'], carid=carid)
+            
+        else:
+            return fl.render_template("403.html")
+
+    except Exception as e:
+        log.error(f"Bet_Car: {e}")
+        return fl.render_template("500.html")
+    finally:
+        conn.close()
+    
+    return fl.render_template("buy_msg.html")
+
+@bp.route("/ready_auc_congrat")
+def ready_auc_congrat():
+    return fl.render_template("ready_auc_congrat.html")

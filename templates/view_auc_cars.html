@@ -5,7 +5,7 @@
     <title>Noblesse Sale</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap" />
-    <link rel="stylesheet" href="../static/css/sale.css" />
+    <link rel="stylesheet" href="../static/css/view_auc_cars.css" />
     <link rel="stylesheet" href="../static/css/global.css" />
     <link rel="stylesheet" href="../static/css/auth_window_new.css" />
 
@@ -27,21 +27,8 @@
 
     <div style="width: fit-content">
       <div class="main-container">
-        <span class="used-cars">Автомобили с пробегом</span>
-        <div class="flex-row-ad">
-          <span class="sort-by-text">Сортировать по:</span>
-          <div id="sort_alph" class="bg-sort animation-class">
-            <span class="sort-text">Алфавиту</span>
-          </div>
-          <div id="sort_mile" class="bg-sort animation-class" active>
-            <span class="sort-text">Пробегу</span>
-          </div>
-          <div id="sort_price" class="bg-sort animation-class">
-            <span class="sort-text">Цене</span>
-          </div>
-          <span id="loader" class="loader"></span>
-          <span class="active-deal">Активных сделок:</span><span class="variable-num-of-deal">{{ active_deals }}</span>
-        </div>
+        <span class="used-cars">Автомобили с аукциона</span>
+
         <div id="content" class="animation-class" style="overflow: visible">
           <div class="flex-row"></div>
         </div>
@@ -74,7 +61,7 @@
       if ($('#sort_alph').attr('active') == null) {
         $('#content').css('opacity', '0%')
         $('#loader').css('opacity', '100%')
-        get_sale_cars((sortby = '(brand, model, year)'))
+        get_auc_cars((sortby = '(brand, model, year)'))
         $('#sort_alph').attr('active', true)
         $('#sort_mile').attr('active', null)
         $('#sort_price').attr('active', null)
@@ -84,7 +71,7 @@
       if ($('#sort_mile').attr('active') == null) {
         $('#content').css('opacity', '0%')
         $('#loader').css('opacity', '100%')
-        get_sale_cars((sortby = 'mileage'))
+        get_auc_cars((sortby = 'mileage'))
         $('#sort_alph').attr('active', null)
         $('#sort_mile').attr('active', true)
         $('#sort_price').attr('active', null)
@@ -94,19 +81,19 @@
       if ($('#sort_price').attr('active') == null) {
         $('#content').css('opacity', '0%')
         $('#loader').css('opacity', '100%')
-        get_sale_cars((sortby = 'price'))
+        get_auc_cars((sortby = 'price'))
         $('#sort_alph').attr('active', null)
         $('#sort_mile').attr('active', null)
         $('#sort_price').attr('active', true)
       }
     })
     
-    function get_sale_cars(sortby) {
+    function get_auc_cars(sortby) {
       if (document.cookie.match(/token=\w+/) == null) {
         document.location.replace('/?auth=1&sale=1')
       } else {
         $.ajax({
-          url: '/get_sale_cars?sortby=' + sortby,
+          url: '/get_auc_cars?sortby=' + sortby,
           type: 'GET',
           dataType: 'text',
           success: function (data) {
@@ -120,7 +107,7 @@
     
     $(document).ready(function () {
       $('#content').css('opacity', '0%')
-      get_sale_cars((sortby = 'mileage'))
+      get_auc_cars((sortby = 'mileage'))
     })
     
     $('#LoginModal').on('show.bs.modal', function (event) {

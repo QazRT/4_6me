@@ -19,12 +19,26 @@
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
+.zoom-class {
+    -webkit-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -moz-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -o-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -ms-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
 .animation-class {
     -webkit-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     -moz-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     -o-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     -ms-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.zoom-class:hover {
+    /* filter: drop-shadow(0px 0px 5px rgb(229, 91, 91)); */
+    transform: scale(101.5%);
+    cursor: pointer;
 }
 
 .icon-class:hover {

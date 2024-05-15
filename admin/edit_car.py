@@ -28,6 +28,43 @@ def validate_image(stream):
     return "." + (format if format != "jpeg" else "jpg")
 
 
+@bp.route("/delete_auc_car/<car_id>")
+def delete_auc_car(car_id):
+    user = AuthApi.is_loggged_in()
+    if user["status"] == False:
+        res = fl.make_response(fl.redirect(f"/?auth=1"), 403)
+        return res
+    
+    try:
+        conn = db.DBConnection()
+        user_role = conn.get_user_perms(user['message']['id'])
+        if user_role['Allow_car_edit'] == False:
+            res = fl.make_response(fl.redirect(f"/?auth=1"), 403)
+            return res
+        if user_role['Allow_car_add'] == False and car_id == None:
+            res = fl.make_response(fl.redirect(f"/?auth=1"), 403)
+            return res
+    except Exception as e:
+        log.error(e)
+        fl.abort(500)
+    finally:
+        conn.close()
+        
+    try:
+        conn = db.DBConnection()
+        conn.executeonce("""
+                         DELETE FROM public."Auction_car_imgs" WHERE car_id = %(car_id)s;
+                         DELETE FROM public."Auction_cars" WHERE id = %(car_id)s;
+                         """, {"car_id": car_id})
+        rmtree(f"static/cars_imgs/auc_cars/{car_id}")
+    except Exception as e:
+        log.error(e)
+        return fl.render_template("500.html")
+    finally:
+        conn.close()
+
+    return fl.redirect(f"/view_auc_cars")
+
 @bp.route("/delete_car/<car_id>")
 def delete_car(car_id):
     user = AuthApi.is_loggged_in()
@@ -154,6 +191,17 @@ def add_car():
             )
             return res
       
+        
+        if input["addto"] == "trade":
+            addto = "trade"
+            del input["addto"]
+        elif input["addto"] == "auc":
+            addto = "auc"
+            del input["addto"]
+        else:
+            res = fl.make_response({"status": False, "message": "Ты че, мышь"})
+            return res
+      
         for i in input.items():
             if i[0] in ints:
                 if i[1].isdigit():
@@ -162,16 +210,6 @@ def add_car():
                     res = fl.make_response(
                         {"status": False, "message": "Введите корректные данные"}
                     )
-                    return res
-
-            elif i[0] == "addto":
-                
-                if i[1] == "trade":
-                    addto = "trade"
-                elif i[1] == "auc":
-                    addto = "auc"
-                else:
-                    res = fl.make_response({"status": False, "message": "Ты че, мышь"})
                     return res
 
             elif i[0] == "close_time":
@@ -207,7 +245,9 @@ def add_car():
                     return res
 
             elif i[0] == "state":
-                if i[1].isdigit() and int(i[1]) in [1, 2, 3]:
+                if addto == "auc":
+                    continue
+                elif i[1].isdigit() and int(i[1]) in [1, 2, 3]:
                     specs["status"] = int(i[1])
                 else:
                     res = fl.make_response({"status": False, "message": "Ты че, мышь"})
@@ -244,8 +284,9 @@ def add_car():
                 conn.add_pics_2_trade_car([i.filename for i in imgs], car_id)
                 
         elif addto == "auc":
-            log.error(specs)
             if car_id == None:
+                specs["start_price"] = specs["price"]
+                del specs["price"]
                 add_res = conn.add_auc_car(**specs)
                 carid = int(add_res["message"])
                 mkdir(f"static/cars_imgs/{addto}_cars/{carid}")
@@ -304,8 +345,13 @@ def edit_car(car_id=None):
             return res
         
         status = 1
+        if fl.request.args.get("addto") == "auc":
+            addto = "auc"
+        else:
+            addto = "trade"
+        
         if car_id != None:
-            if fl.request.args.get("addto") == "auc":
+            if addto == "auc":
                 car = conn.get_auc_car(id=int(car_id))
                 if car == None:
                     return fl.render_template("404.html")
@@ -315,14 +361,12 @@ def edit_car(car_id=None):
                 car["price"] = car["start_price"]
 
                 imgs = list(i["pic_name"] for i in conn.get_auc_car_pics(car_id=car_id))
-                addto = "auc"
                 status = None
             else:
                 car = conn.get_trade_car(id=int(car_id))
                 imgs = list(
                     i["pic_name"] for i in conn.get_trade_car_pics(car_id=car_id)
                 )
-                addto = "trade"
                 conn.executeonce("SELECT status FROM public.\"Trade_cars\" WHERE id = %(id)s", {"id": car_id})
                 status = conn.fetchone()["status"]
                 
@@ -380,5 +424,6 @@ def edit_car(car_id=None):
             fuel_systems=fuel_systems,
             fuel_types=fuel_types,
             id=None,
+            addto=addto,
             state=status
         )

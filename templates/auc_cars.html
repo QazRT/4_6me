@@ -3,7 +3,7 @@
     {% if tmp == 0 %}
         <div class="flex-row">
     {% endif %}
-    <div id="car_{{ car['id'] }}" class="car zoom-class" style="--left: {{ tmp }}px;" onclick="document.location='/trade_car/{{ car['id'] }}'">
+    <div id="car_{{ car['id'] }}" class="car zoom-class" style="--left: {{ tmp }}px;" onclick="document.location='/auction?carid={{ car['id'] }}'">
         {% if car['status'] == 'Скрыто' %}
             <div class="background-of-car" style="background: #d3d3d3;"></div>
         {% elif car['status'] == 'Продано' %}
@@ -16,14 +16,14 @@
         <span class="name-of-car">{{ car['car_brand'] }} {{ car['car_model'] }} {{ car['car_year'] }}</span>
         <span class="specs">{{ car['main_info'] }}, <br />{{ car['addit_info'] }}</span>
         </div>
-        <span class="price">{{ car['price'] }} <span class="rub-icon">₽</span></span>
+        <span class="price">{{ car['current_price'] }} <span class="rub-icon">₽</span></span>
         {% if user_role['Allow_car_edit'] == True %}
-            <div class="editbtn animation-class" onclick="document.location='/edit_car/{{ car['id'] }}'"
+            <div class="editbtn animation-class" onclick="document.location='/edit_car/{{ car['id'] }}?addto=auc'"
             onmouseenter="$('#car_{{ car['id'] }}').attr('onclick', '')"
-            onmouseleave="$('#car_{{ car['id'] }}').attr('onclick', 'document.location=\'/trade_car/{{ car['id'] }}\'')">✏</div>
-            <div class="deletebtn animation-class" onclick="if (confirm('Ты уверен, что хочешь удалить этот автомобиль? ({{ car['car_brand'] }} {{ car['car_model'] }} {{ car['car_year'] }})') == true) {document.location='/delete_car/{{ car['id'] }}'}"
+            onmouseleave="$('#car_{{ car['id'] }}').attr('onclick', 'document.location=\'/auction?carid={{ car['id'] }}\'')">✏</div>
+            <div class="deletebtn animation-class" onclick="if (confirm('Ты уверен, что хочешь удалить этот автомобиль? ({{ car['car_brand'] }} {{ car['car_model'] }} {{ car['car_year'] }})') == true) {document.location='/delete_auc_car/{{ car['id'] }}'}"
             onmouseenter="$('#car_{{ car['id'] }}').attr('onclick', '')"
-            onmouseleave="$('#car_{{ car['id'] }}').attr('onclick', 'document.location=\'/trade_car/{{ car['id'] }}\'')">🗑</div>
+            onmouseleave="$('#car_{{ car['id'] }}').attr('onclick', 'document.location=\'/auction?carid={{ car['id'] }}\'')">🗑</div>
         {% endif %}
     </div>
 
@@ -33,12 +33,12 @@
             </div>
             <div class="flex-row">
         {% endif %}
-        <div id="add_car" class="car zoom-class" style="--left: {{ tmp }}px;" onclick="document.location='/edit_car'">
+        <div id="add_car" class="car zoom-class" style="--left: {{ tmp }}px;" onclick="document.location='/edit_car?addto=auc'">
             <div class="background-of-car icon-class" style="background: #F6D7D5;"></div>
-            <span class="show-more-plus" style="--left: 1px; border-radius: 15px;" onclick="document.location='/sale'">+</span>
-            <span class="show-more" style="--left: 1px; border-radius: 15px;" onclick="document.location='/sale'">Добавить авто</span>
+            <span class="show-more-plus" style="--left: 1px; border-radius: 15px;">+</span>
+            <span class="show-more" style="--left: 1px; border-radius: 15px;">Добавить авто</span>
             <div class="car_desc">
-        </div>
+            </div>
             
         </div>
     {% endif %}

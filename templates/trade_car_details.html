@@ -74,10 +74,18 @@
             <div class="price-decoration"></div>
             <span class="text-price">Цена</span><span class="current-price-5">{{ price }}</span><span class="icon-of-rub">₽</span>
           </div>
-          <div class="btn-buy icon-class">
-            <div class="bg-btn-buy"></div>
-            <span class="text-btn-buy">Купить</span>
-          </div>
+
+          {% if status == 'В продаже' %}
+            <div class="btn-buy icon-class" onclick="buy_car({{ id }})" data-toggle="modal" data-target="#CongratModal">
+              <div class="bg-btn-buy"></div>
+              <span class="text-btn-buy">Купить</span>
+            </div>
+          {% else %}
+            <div class="btn-buy" style="cursor: auto">
+              <div class="bg-btn-buy disabled"></div>
+              <span class="text-btn-buy">Хуй тебе</span>
+            </div>
+          {% endif %}
         </div>
       </div>
 
@@ -120,8 +128,13 @@
       </div>
     </div>
 
-    {% include "footer.html" %}
+    {% include 'footer.html' %}
 
+    <div class="modal fade" id="CongratModal" data-backdrop="static" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div id="CongratModalContent" class="modal-content animation-class" style="left: -15%; margin-top: 45%; width: fit-content; border-radius: 15px;"></div>
+      </div>
+    </div>
 
     <div class="modal fade" id="LoginModal" data-backdrop="static" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
@@ -141,6 +154,20 @@
     </div>
   </body>
 
+  {% if status == 'В продаже' %}
+    <script>
+      function buy_car(id) {
+        $.ajax({
+          url: '/congrat/' + id,
+          type: 'GET',
+          dataType: 'text',
+          success: function (data) {
+            $('#CongratModalContent').html(data)
+          }
+        })
+      }
+    </script>
+  {% endif %}
   <script>
     $('#main_container').css('opacity', '0%')
     $(document).ready(function () {
@@ -165,7 +192,7 @@
       }
       position = scroll
     })
-
+    
     $('#LoginModal').on('show.bs.modal', function (event) {
       $.ajax({
         url: '/auth',

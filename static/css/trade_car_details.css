@@ -262,6 +262,9 @@ button {
     z-index: 83;
     border-radius: 15px;
 }
+.bg-btn-buy.disabled {
+    background: #E58780;
+}
 
 .text-btn-buy {
     display: flex;
@@ -280,6 +283,10 @@ button {
     text-align: center;
     white-space: nowrap;
     z-index: 84;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 
 .name-of-car {

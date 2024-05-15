@@ -1,0 +1,94 @@
+﻿<body>
+  <div class="bg-pop-up-message-buy">
+    <div class="flex-row-buy-msg">
+      <span class="congratulations">Всё!</span>
+      <div class="outline-cross" data-dismiss="modal"></div>
+    </div>
+    <span class="dream-car">Следите за статусом в своем аккаунте!</span><span class="contact-manager">Наш менеджер свяжется с вами, если Вы выиграете</span>
+  </div>
+</body>
+
+<script>
+  get_car('carid', closeli=false)
+</script>
+
+<style>
+  .bg-pop-up-message-buy {
+    position: relative;
+    width: 760px;
+    height: 336px;
+    border: 1px solid #000000;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 15px;
+  }
+  .flex-row-buy-msg {
+    position: relative;
+    width: 571px;
+    height: 69px;
+    margin: 16px 0 0 167px;
+    z-index: 5;
+  }
+  .congratulations {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 426px;
+    height: 69px;
+    top: 0;
+    left: 0;
+    color: #93261e;
+    font-family: Inter, var(--default-font-family);
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 48.409px;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 4;
+  }
+  .outline-cross {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    top: 3px;
+    left: 525px;
+    background: url(../static/images/d8a3fb73-6003-44fb-9209-65c726bfe7ea.png) no-repeat center;
+    background-size: cover;
+    z-index: 5;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .dream-car {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 692px;
+    height: 143px;
+    margin: 7px 0 0 24px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 48.409px;
+    text-align: center;
+    z-index: 3;
+  }
+  .contact-manager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 582px;
+    height: 82px;
+    margin: 1px 0 0 90px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 29.045px;
+    text-align: center;
+    z-index: 2;
+  }
+</style>

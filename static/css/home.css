@@ -625,13 +625,16 @@ button {
   width: 300px;
   height: 400px;
   top: 0;
-  left: calc(330*var(--left) + 34px) ;
-  background: #cd6159;
+  /* left: 34px; */
+  left: calc(330* var(--left) + 34px);
+  background: #ffffff;
   opacity: 0.5;
-  z-index: 39;
+  z-index: 50;
   border-radius: 15px;
+  border: 1px solid #6b6b6b;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
+
 .show-more {
   display: flex;
   align-items: center;
@@ -639,13 +642,33 @@ button {
   position: absolute;
   width: 300px;
   height: 399px;
-  top: 1px;
+  top: 55px;
   left: calc(330*var(--left) + 38.052px);
-  color: #741c1c;
+  /* color: #741c1c; */
   font-family: Inter, var(--default-font-family);
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 500;
   line-height: 16.943px;
+  text-align: center;
+  z-index: 40;
+  border-radius: 15px;
+}
+
+.show-more-plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 300px;
+  height: 399px;
+  top: -25px;
+  left: calc(330*var(--left) + 35.052px);
+  /* color: #741c1c; */
+  font-family: Inter, var(--default-font-family);
+  font-size: 76px;
+  font-weight: 100;
+  line-height: 55.943px;
+  letter-spacing: -7px;
   text-align: center;
   z-index: 40;
   border-radius: 15px;

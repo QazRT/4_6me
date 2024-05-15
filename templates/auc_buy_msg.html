@@ -1,0 +1,165 @@
+﻿<body>
+  <div class="bg-pop-up-message-buy">
+    <div class="flex-row-buy-msg">
+      <span class="congratulations">Еще немного</span>
+      <div class="outline-cross" data-dismiss="modal"></div>
+    </div>
+    <span class="dream-car">Введите свою цену:</span>
+    <input id="user_price" name="userprice" min="{{ curr_price }}" step="1000" value="{{ curr_price }}" class="button-fields animation-class" type="number" style="top: 150px; left: 40px" />
+    <!-- <span class="contact-manager">Наш менеджер свяжется с вами по почте в ближайшее время</span> -->
+    <div class="btn-buy icon-class" onclick="send_req()">
+      <div class="bg-btn-buy"></div>
+      <span class="text-btn-buy">Отправить</span>
+    </div>
+  </div>
+</body>
+
+<script>
+  function send_req() {
+    $('#CongratModalContent').css('opacity', '0%')
+    $('#CongratModalContent').css('left', '-35%')
+    $.post(
+      '/bet_car/' + carid, // адрес обработчика
+      $('#user_price').serialize(), // отправляемые данные
+  
+      function (msg) {
+        // получен ответ сервера
+        $.ajax({
+          url: '/ready_auc_congrat',
+          type: 'GET',
+          dataType: 'text',
+          success: function (data) {
+            $('#CongratModalContent').html(data)
+            $('#CongratModalContent').css('opacity', '100%')
+          }
+        })
+      }
+    )
+  }
+</script>
+
+<style>
+  .bg-pop-up-message-buy {
+    position: relative;
+    width: 510px;
+    height: 296px;
+    border: 1px solid #000000;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 15px;
+  }
+  .flex-row-buy-msg {
+    position: relative;
+    width: 510px;
+    height: 69px;
+    margin: 16px 0 0 0px;
+    z-index: 5;
+  }
+  .congratulations {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 510px;
+    height: 69px;
+    top: 0;
+    left: 0;
+    color: #93261e;
+    font-family: Inter, var(--default-font-family);
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 48.409px;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 4;
+  }
+  .outline-cross {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    top: 3px;
+    right: 15px;
+    background: url(../static/images/d8a3fb73-6003-44fb-9209-65c726bfe7ea.png) no-repeat center;
+    background-size: cover;
+    z-index: 5;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .dream-car {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    width: 692px;
+    height: 143px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 48.409px;
+    left: 60px;
+    top: 10px;
+    text-align: center;
+    z-index: 3;
+  }
+  .contact-manager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 582px;
+    height: 82px;
+    margin: 1px 0 0 90px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 29.045px;
+    text-align: center;
+    z-index: 2;
+  }
+  
+  .btn-buy {
+    position: relative;
+    width: 250px;
+    height: 60px;
+    margin-left: 130px;
+    margin-top: -12px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    z-index: 82;
+    border-radius: 15px;
+  }
+  
+  .bg-btn-buy {
+    position: absolute;
+    width: 250px;
+    height: 60px;
+    top: 0;
+    left: 50%;
+    background: #93261e;
+    transform: translate(-50%, 0);
+    z-index: 83;
+    border-radius: 15px;
+  }
+  
+  .text-btn-buy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 250px;
+    height: 60px;
+    top: 0;
+    left: 0;
+    color: #ffffff;
+    font-family: Inika, var(--default-font-family);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 46.908px;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 84;
+  }
+</style>

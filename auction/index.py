@@ -82,6 +82,35 @@ def auction_get_car():
     
     return res
 
+@bp.route("/bet_car/<carid>", methods=['POST'])
+def bet_car(carid):
+    user = AuthApi.is_loggged_in()
+    if user["status"] == False:
+        return fl.redirect(f"/?auth=1")
+    
+    if carid.isdigit() == False:
+        return fl.render_template("404.html")
+           
+    try:
+        conn = db.DBConnection()
+               
+        if int(fl.request.form.get('userprice')) - int(conn.get_auc_car_current_price(car_id=carid)) >= 1000:
+            conn.set_auc_car_status(car_id=carid, user_id=user["message"]["id"],
+                                        action=db.AucActions.BET,
+                                        action_info=str(int(fl.request.form.get('userprice')) - int(conn.get_auc_car_current_price(car_id=carid))))
+        
+        else:
+            return 'False'
+        
+    except Exception as e:
+        log.error(f"Bet_Car: {e}")
+        return fl.render_template("500.html")
+    finally:
+        conn.close()
+        
+    return 'True'
+    
+
 @bp.route("/auction")
 def auction_index():
     user = AuthApi.is_loggged_in()

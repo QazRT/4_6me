@@ -20,6 +20,9 @@ def trade_car(car_id):
         conn = db.DBConnection()
         
         car = conn.get_trade_car(id=int(car_id))
+        if car == None:
+            return fl.render_template("404.html")
+        
         car['price'] = pretty_num(car['price'])
         car['hp'] = pretty_num(car['hp'])
         car['mileage'] = pretty_num(car['mileage'])

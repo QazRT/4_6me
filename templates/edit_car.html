@@ -31,7 +31,11 @@
       <input name="files[]" id="uploaded_imgs" type="file" accept="image/png,image/jpg,image/jpeg" multiple hidden />
       <div id="main_container" class="main-container animation-class">
         <div class="flex-row-dfff">
-          <a id="path_main" class="main hover-class" href="/sale">Главная</a><span class="divider">/</span><span id="path_car_name" class="toyota-chr">{{ brand }} {{ model }} {{ year }}</span>
+          {% if addto == "auc" %}
+            <a id="path_main" class="main hover-class" href="/view_auc_cars">Главная</a><span class="divider">/</span><span id="path_car_name" class="toyota-chr">{{ brand }} {{ model }} {{ year }}</span>
+          {% else %}
+            <a id="path_main" class="main hover-class" href="/sale">Главная</a><span class="divider">/</span><span id="path_car_name" class="toyota-chr">{{ brand }} {{ model }} {{ year }}</span>
+          {% endif %}
           <div id="state-tumbl" class="state-tumbl">
             <input id="state_input" name="state" value="{{ state }}" hidden/>
             <div id="tumbl-select" class="tumbl-select animation-class normal"></div>
@@ -140,7 +144,7 @@
 
             <div class="enter-price">
               <span id="price-text" class="price">Цена:</span>
-              <input value="{{ price }}" name="price" placeholder="Введите цену" class="input-rectangle" style="left:255px; width: 160px" />
+              <input value="{{ price }}" name="price" oninput="this.value=this.value.replace(/[^\d]*/gi, '');" placeholder="Введите цену" class="input-rectangle" style="left:255px; width: 160px" />
             </div>
             <div id="time-out-input" class="enter-time-out" hidden>
               <span class="text-time-out">Время окончания:</span>
@@ -438,7 +442,7 @@
             $('#error').attr('hidden', false)
             $('#Error_txt').text(r['message'])
           } else if (r['status'] == true) {
-            document.location = '/sale'
+            document.location = $('#path_main').attr('href')
           }
         },
         error: function (r) {

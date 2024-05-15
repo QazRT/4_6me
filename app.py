@@ -1,5 +1,6 @@
 ﻿from flask import Flask
 from flask import render_template
+from flask_mail import Mail
 import ssl
 import logging
 import logging.handlers
@@ -12,6 +13,7 @@ import tools.auth as auth
 import trade.sale as sale
 import trade.car_details as cdet
 import admin.edit_car as cedit
+import admin.view_all_auc_cars as adminauc
 ###
 
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -24,9 +26,19 @@ app.register_blueprint(auth.bp)
 app.register_blueprint(sale.bp)
 app.register_blueprint(cdet.bp)
 app.register_blueprint(cedit.bp)
+app.register_blueprint(adminauc.bp)
 
 
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
+app.config['MAIL_SERVER'] = 'smtp.nobless-oblige.ru'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'noreply@nobless-oblige.ru'
+app.config['MAIL_DEFAULT_SENDER'] = 'noreply@nobless-oblige.ru'
+app.config['MAIL_PASSWORD'] = 'password'
+
+mail = Mail(app)
+
 
 @app.route('/.well-known/pki-validation/1FCC9AFF590712C8FF1FAF551AEC12FB.txt')
 def cert():

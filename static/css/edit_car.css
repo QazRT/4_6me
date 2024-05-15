@@ -744,6 +744,10 @@ option:hover {
     height: 35px;
     border: solid 2px #93261E;
     border-radius: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 
 .tumbl-element {
@@ -753,7 +757,6 @@ option:hover {
     left: 4px;
     cursor: pointer;
 }
-
 
 .tumbl-select {
     position: absolute;

@@ -8,6 +8,7 @@ class AucActions:
     HIDE = "Hide"
     UNHIDE = "Unhide"
     SOLD = "Sold"
+    BET = "Bet"
 
 class DBConnection:
     def __init__(self):
@@ -77,7 +78,7 @@ class DBConnection:
                 transmission = self.fetchone["id"]
                 
             prompt = 'INSERT INTO public."Auction_cars"(brand, model, color, year, transmission, vin, hp, drive, fuel_type, body_type, mileage, tank_capacity, lenght, width, weight, engine_capacity, rating, fuel_system, start_price, close_time)\
-                VALUES (%(brand)s, %(model)s, %(color)s, %(year)s, %(transmission)s, %(vin)s, %(hp)s, %(drive)s, %(fuel_type)s, %(body_type)s, %(mileage)s, %(tank_capacity)s, %(lenght)s, %(width)s, %(weight)s, %(engine_capacity)s, %(rating)s, %(fuel_system)s, %(start_price)s, %(close_time)s);'
+                VALUES (%(brand)s, %(model)s, %(color)s, %(year)s, %(transmission)s, %(vin)s, %(hp)s, %(drive)s, %(fuel_type)s, %(body_type)s, %(mileage)s, %(tank_capacity)s, %(lenght)s, %(width)s, %(weight)s, %(engine_capacity)s, %(rating)s, %(fuel_system)s, %(start_price)s, %(close_time)s) RETURNING id;'
             self.executeonce( prompt, {"brand": brand, "model": model, "color": color,
                                         "year": year, "transmission": transmission, "vin": vin,
                                         "hp": hp, "drive": drive, "fuel_type": fuel_type,
@@ -86,7 +87,7 @@ class DBConnection:
                                         "engine_capacity": engine_capacity, "rating": rating, "fuel_system": fuel_system,
                                         "start_price": start_price, "close_time": close_time})
             
-            return {"status": True, "message": "Successfully added new car"}
+            return {"status": True, "message": f"{self.fetchone()['id']}"}
         except Exception as e:
             log.error(e)
             return {"status": False, "message": f"{e}"}
@@ -220,6 +221,23 @@ class DBConnection:
             self.executeonce("""SELECT SUM(CAST("action_info" AS INT)) FROM "Auction_history"
                              WHERE "action" = 'Bet' AND "car_id" = %(car_id)s""", {"car_id": car_id})
             return self.cur.fetchone()['sum']
+        
+        except Exception as e:
+            log.error(e)
+    
+    def get_auc_car_current_price(self, car_id):
+        try:
+            self.executeonce("""SELECT start_price FROM "Auction_cars"
+                             WHERE id = %(car_id)s""", {"car_id": car_id})
+            
+            price = int(self.cur.fetchone()["start_price"])
+            
+            self.executeonce("""SELECT SUM(CAST("action_info" AS INT)) FROM "Auction_history"
+                             WHERE "action" = 'Bet' AND "car_id" = %(car_id)s""", {"car_id": car_id})
+            
+            curr_price = self.cur.fetchone()['sum']
+            price += int(curr_price) if curr_price != None else 0
+            return price
         
         except Exception as e:
             log.error(e)

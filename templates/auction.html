@@ -29,7 +29,7 @@
       <div class="background-of-car" id="CarCard"></div>
       <div class="flex-row-cc">
         <div class="btn-taketotakepart icon-class">
-          <span class="takepart">Участвовать</span>
+          <span class="takepart" data-toggle="modal" data-target="#CongratModal">Участвовать</span>
         </div>
         <div class="btn-taketotakepart-13 icon-class" onclick="get_car('prevcarid')">
           <span class="takepart-14">Дальше</span>
@@ -37,8 +37,13 @@
       </div>
     </div>
 
-    {% include "footer.html" %}
+    {% include 'footer.html' %}
 
+    <div class="modal fade" id="CongratModal" data-backdrop="static" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div id="CongratModalContent" class="modal-content animation-class" style="left: -15%; margin-top: 45%; width: fit-content; border-radius: 15px;"></div>
+      </div>
+    </div>
 
     <div class="modal fade" id="LoginModal" data-backdrop="static" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
@@ -63,7 +68,7 @@
   let params = new URLSearchParams(window.location.search)
   carid = params.get('carid')
   
-  function get_car(a) {
+  function get_car(a, closeli = true) {
     if (document.cookie.match(/token=\w+/) == null) {
       document.location.replace('/?auth=1&auc=' + carid)
     } else {
@@ -74,6 +79,16 @@
         success: function (data) {
           $('#CarCard').html(data)
           $('body,html').animate({ scrollTop: 75 }, 400)
+          if (closeli) {
+            $.ajax({
+              url: '/auc_congrat/' + carid,
+              type: 'GET',
+              dataType: 'text',
+              success: function (data) {
+                $('#CongratModalContent').html(data)
+              }
+            })
+          }
         }
       })
     }

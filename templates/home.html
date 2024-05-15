@@ -68,7 +68,7 @@
               {% endif %}
             {% endfor %}
           </ol>
-          <div class="carousel-inner" style="height:450px">
+          <div class="carousel-inner" style="height:450px;">
             {% for car in cars %}
               
             {% if loop.index0 == 0 %}
@@ -101,9 +101,12 @@
                     <div>
                   {% endif %}
                   {% set tmp = (loop.index)%3 %}
-                  <div class="btn" style="--left: {{tmp}}px; border-radius: 15px;" onclick="document.location='/sale'"></div>
-                  <span class="show-more" style="--left: {{tmp}}px; border-radius: 15px;" onclick="document.location='/sale'">Показать ещё</span>   
-                </div>
+                  <div>
+                    <div class="btn" style="--left: {{tmp}}px; border-radius: 15px; border: 1px solid #6b6b6b; background: #F6D7D5;" onclick="document.location='/sale'"></div>
+                      <span class="show-more-plus" style="--left: 1px; border-radius: 15px;" onclick="document.location='/sale'">▢▢<br>▢▢</span>
+                      <span class="show-more" style="--left: 1px; border-radius: 15px;" onclick="document.location='/sale'">Посмотреть ещё</span>
+                    </div>
+                  </div>
             {% endif %}
               {% if loop.index % 3 == 0 or loop.last %}
                 </div>
