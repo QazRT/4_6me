@@ -339,6 +339,16 @@ button {
 
 }
 
+.small_price {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: absolute;
+    top: 82.735px;
+    left: 11px;
+    transform: scale(0.7);
+}
+
 .price {
     display: flex;
     align-items: flex-start;
@@ -374,6 +384,37 @@ button {
     text-align: left;
     white-space: nowrap;
     z-index: 59;
+}
+
+.part_count {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    top: -15px;
+    /* margin-left: 25px; */
+    /* right: 0px; */
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 700;
+    /* line-height: 24.205px; */
+    text-align: left;
+    white-space: nowrap;
+    z-index: 59;
+    transform: scale(0.7);
+}
+
+.part_count_icon {
+    position: relative;
+    width: 15.5px;
+    height: 16.979px;
+    margin-left: 2px;
+    /* top: 29.25px; */
+    right: 0px;
+    background: url(../images/84a2fc0c-95ce-4989-9c45-1b4c6178fe56.png) no-repeat center;
+    background-size: 90% 90%;
+    z-index: 103;
 }
 
 .icon-of-rub {

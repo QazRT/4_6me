@@ -16,7 +16,12 @@
         <span class="name-of-car">{{ car['car_brand'] }} {{ car['car_model'] }} {{ car['car_year'] }}</span>
         <span class="specs">{{ car['main_info'] }}, <br />{{ car['addit_info'] }}</span>
         </div>
-        <span class="price">{{ car['current_price'] }} <span class="rub-icon">₽</span></span>
+        <div class="small_price">
+            <span class="price">{{ car['start_price'] }} <span class="rub-icon">₽</span></span>
+        </div>
+        <span class="price">{{ car['current_price'] }} <span id="rubi_{{ car['id'] }}" class="rub-icon">₽ <a id="pc_{{ car['id'] }}" class="part_count">+{{ car['part_count'] }} <div class="part_count_icon"></div></a></span></span>
+
+
         {% if user_role['Allow_car_edit'] == True %}
             <div class="editbtn animation-class" onclick="document.location='/edit_car/{{ car['id'] }}?addto=auc'"
             onmouseenter="$('#car_{{ car['id'] }}').attr('onclick', '')"

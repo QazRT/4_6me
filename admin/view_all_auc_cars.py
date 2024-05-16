@@ -55,6 +55,11 @@ def get_auc_cars():
             car_new["close_time"] = car["close_time"].strftime("%d.%m.%Y %H:%M")
             car_new["current_price"] = pretty_num(car["start_price"]+(curr_price if curr_price != None else 0))
             car_new["status"] = conn.get_auc_car_status(car_id=car["id"])
+            
+            conn.executeonce("SELECT COUNT(action) FROM (SELECT DISTINCT user_id, action FROM public.\"Auction_history\" WHERE car_id=%(car_id)s) GROUP BY action HAVING action='Bet'", {"car_id": car["id"]})
+            part_count = conn.fetchone()
+            car_new["part_count"] = 0 if part_count == None else part_count["count"]
+            
             cars.append(car_new)
 
         conn.close()

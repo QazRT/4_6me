@@ -58,7 +58,7 @@ def auction_get_car():
             auc_car = conn.get_auc_car(id=fl.request.args.get('carid'))
 
         
-        conn.executeonce("SELECT COUNT(action) FROM public.\"Auction_history\" WHERE car_id=%(car_id)s GROUP BY action, car_id HAVING action='Bet';", {"car_id": auc_car["id"]})
+        conn.executeonce("SELECT COUNT(action) FROM (SELECT DISTINCT user_id, action FROM public.\"Auction_history\" WHERE car_id=%(car_id)s) GROUP BY action HAVING action='Bet'", {"car_id": auc_car["id"]})
         part_count = conn.fetchone()
         curr_price = conn.get_auc_car_price(auc_car["id"])
         auc_car["mileage"] = pretty_num(auc_car["mileage"])

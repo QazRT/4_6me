@@ -51,7 +51,7 @@ def home():
             auc_car = auc_car[0]
         
         auc_car_new = {}
-        conn.executeonce("SELECT COUNT(action) FROM public.\"Auction_history\" WHERE car_id=%(car_id)s GROUP BY action, car_id HAVING action='Bet';", {"car_id": auc_car["id"]})
+        conn.executeonce("SELECT COUNT(action) FROM (SELECT DISTINCT user_id, action FROM public.\"Auction_history\" WHERE car_id=%(car_id)s) GROUP BY action HAVING action='Bet'", {"car_id": auc_car["id"]})
         part_count = conn.fetchone()
         
         conn.executeonce("SELECT COUNT(*) FROM \"Auction_cars\" where (id in (SELECT car_id FROM \"Auction_history\" WHERE ACTION != 'Sold' AND ACTION != 'Hide') OR id not in (SELECT car_id FROM \"Auction_history\")) AND CLOSE_TIME > CURRENT_TIMESTAMP")
@@ -89,20 +89,20 @@ def home():
         
     return fl.render_template("home.html", cars=cars, **auc_car_new, auction_count=auction_count)
 
-@bp.route("/test", methods=["GET", "POST"])
-def test():
-    conn = db.DBConnection()
-    methods = list(filter(lambda x: not x.startswith("_"), dir(conn)))
-    if fl.request.method == "POST":
-        select = fl.request.form.get("test_select")
-        args = fl.request.form.get("args")
-        log.info(f"conn.{select}({args})")
-        name = eval(f"conn.{select}({args})")
-        # name = select
-    else:
-        # conn.add_auc_car(body_type="Седан")
-        name = "world"
-    return fl.render_template("test.html", name=name, option=methods)
+# @bp.route("/test", methods=["GET", "POST"])
+# def test():
+#     conn = db.DBConnection()
+#     methods = list(filter(lambda x: not x.startswith("_"), dir(conn)))
+#     if fl.request.method == "POST":
+#         select = fl.request.form.get("test_select")
+#         args = fl.request.form.get("args")
+#         log.info(f"conn.{select}({args})")
+#         name = eval(f"conn.{select}({args})")
+#         # name = select
+#     else:
+#         # conn.add_auc_car(body_type="Седан")
+#         name = "world"
+#     return fl.render_template("test.html", name=name, option=methods)
 
 @bp.route("/error/<error_id>")
 def error_example(error_id):
