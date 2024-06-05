@@ -1,20 +1,76 @@
-﻿<div id="login" class="rectangle-login">
-  <a class="login-2" style="top:40%;">Юзер обнаружен!</a>
-  <a class="login-2" style="top:30%; font-size:large">Да-да, ты: {{ email }}</a>
+﻿<link rel="stylesheet" href="../static/css/profile_window.css" />
 
-  <div id="Logout" class="auth-rectangle-8 icon-class" style="top: 65px;">
-    <span class="login-site" tabindex="3">Выйти из аккаунта</span>
+<div class="bg-pop-up-message-account">
+  <div class="flex-row-profile-user-name">
+    <div class="profile-outline-cross animation-class" data-dismiss="modal"></div>
+    <span class="name-surname">
+      <div id="Logout" class="bg-sh-logout icon-class">
+        <div class="profile-icon-logout"></div>
+      </div>
+      {{ name }} {{ surname }}
+    </span>
   </div>
-  <div class="auth-rectangle-9" style="top:50px">
-    <span id="CloseButton" class="close animation-class" data-dismiss="modal" tabindex="4">Закрыть</span>
-    <div class="auth-outlined-suggested-symbol"></div>
+  <span class="profile-mail">{{ email }}</span>
+  <div class="profile-flex-row-e">
+    <span class="profile-phone">{{ phone_number }}</span>
+    <div class="profile-regroup">
+      {% if user_perms['Allow_manage_users'] %}
+        <div class="bg-sh-users icon-class">
+          <div class="profile-icon-users"></div>
+        </div>
+      {% endif %}
+      {% if user_perms['Allow_ext_car_view'] or user_perms['Allow_car_add'] or user_perms['Allow_car_edit'] %}
+        <div class="bg-sh-sails icon-class" onclick="document.location='/sale'">
+          <div class="profile-icon-sails"></div>
+        </div>
+      {% endif %}
+
+      {% if user_perms['Allow_ext_car_view'] or user_perms['Allow_car_add'] or user_perms['Allow_car_edit'] %}
+        <div class="bg-sh-aucs icon-class" onclick="document.location='/view_auc_cars'">
+          <div class="profile-icon-aucs"></div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="profile-line"></div>
+  <div class="profile-proc">
+    <span class="deals-in-process">Сделки в процессе:</span>
+    {% for car in proc_cars %}
+      <div class="flex-row-process-deal">
+        <div class="profile-car">
+          <span class="profile-cars-name">{{ car['brand'] }} {{ car['model'] }} {{ car['year'] }}</span><span class="profile-price-tag">{{ car['curr_price'] }}</span><span class="profile-rub-icon">₽</span><span class="date-tag">{{ car['timestamp'] }}</span><a class="look-btn hover-class" href="/auction?carid={{ car['id'] }}">Посмотреть</a>
+        </div>
+      </div>
+    {% endfor %}
+    {% if proc_cars|length == 0 %} 
+    <div class="flex-row-ended-deal">
+      <span class="ended-deals" style="color: #a9a9a9; top:-15px;">Активных сделок сейчас нет</span>
+    </div>
+    {% endif %}
+    <span class="ended-deals">Законченные сделки:</span>
+    {% for car in auc_cars %}
+      <div class="flex-row-ended-deal">
+        <div class="profile-car">
+          <span class="profile-cars-name">{{ car['brand'] }} {{ car['model'] }} {{ car['year'] }}</span><span class="profile-price-tag">{{ car['curr_price'] }}</span><span class="profile-rub-icon">₽</span><span class="date-tag">{{ car['timestamp'] }}</span><a class="look-btn hover-class" href="/auction?carid={{ car['id'] }}">Посмотреть</a>
+        </div>
+      </div>
+    {% endfor %}
+
+    {% if auc_cars|length == 0 %} 
+    <div class="flex-row-ended-deal">
+      <span class="ended-deals" style="color: #a9a9a9; top:-15px; height: 0;">Законченных сделок пока нет</span>
+    </div>
+    {% endif %}
   </div>
 </div>
 
 <script>
-  logged = true;
+  logged = true
+  
   $('#Logout').click(function () {
     document.cookie = 'token=none; max-age=-1; path=/'
     $('#LoginModal').modal('hide')
   })
+  
+  $('#LoginModal').attr('keyboard', 'true')
 </script>

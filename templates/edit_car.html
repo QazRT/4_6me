@@ -132,7 +132,7 @@
                   <input value="{{ brand }}" name="brand" aria-controls="false" placeholder="Марка" class="input-rectangle-scroll" style="width: 120px" />
                 {% endif %}
                 <input value="{{ model }}" name="model" aria-controls="false" placeholder="Модель" class="input-rectangle-scroll" style="width: 200px" />
-                <input value="{{ year }}" name="year" oninput="this.value=this.value.replace(/[^\d]*/gi, '');" aria-controls="false" placeholder="Год" class="input-rectangle-scroll" style="width: 80px" />
+                <input value="{{ year }}" maxlength="4" name="year" oninput="this.value=this.value.replace(/[^\d]*/gi, '');" aria-controls="false" placeholder="Год" class="input-rectangle-scroll" style="width: 80px" />
               </div>
             </div>
 

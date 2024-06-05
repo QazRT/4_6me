@@ -347,7 +347,12 @@ def add_car():
                         elif specs["status"] == db.AucActions.HIDE:
                             conn.set_auc_car_status(user_id=user["message"]["id"], car_id=car_id, status=db.AucActions.HIDE)
                         elif specs["status"] == db.AucActions.SOLD:
-                            conn.set_auc_car_status(user_id=user["message"]["id"], car_id=car_id, status=db.AucActions.SOLD)
+                            conn.executeonce("""SELECT user_id, timestamp FROM "Auction_history" WHERE
+                                                        car_id = %(car_id)s 
+                                                        AND action = 'Bet' ORDER BY timestamp DESC LIMIT 1""",
+                                             {"car_id": car_id})
+                            log.warn(f'{car_id}')
+                            conn.set_auc_car_status(user_id=dict(conn.fetchone())['user_id'], car_id=car_id, status=db.AucActions.SOLD)
                     except:
                         pass
                 

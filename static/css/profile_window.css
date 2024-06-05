@@ -1,0 +1,356 @@
+﻿.bg-pop-up-message-account {
+    position: absolute;
+    width: 760px;
+    height: 450px;
+    border: 1px solid #000000;
+    background: #FFF no-repeat center;
+    margin: 0 0 0 0;
+    z-index: 33;
+    overflow: visible auto;
+    border-radius: 15px;
+}
+
+.profile-proc {
+    overflow: auto;
+    height: 245px;
+}
+
+.flex-row-profile-user-name {
+    position: relative;
+    width: 652px;
+    height: 67px;
+    margin: 21px 0 0 90px;
+    z-index: 53;
+}
+
+.flex-row-process-deal {
+    position: relative;
+    width: 672px;
+    /* height: 40px; */
+    margin: 0 0 10px 54px;
+    z-index: 46;
+}
+
+.flex-row-ended-deal {
+    position: relative;
+    width: 672px;
+    /* height: 40px; */
+    margin: 0 0 10px 54px;
+    z-index: 46;
+}
+
+.name-surname {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    height: 58px;
+    top: 9px;
+    left: -42px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 48.409px;
+    text-align: left;
+    white-space: nowrap;
+    z-index: 52;
+}
+
+.profile-mail {
+    display: block;
+    position: relative;
+    height: 38px;
+    margin: 1px 0 0 90px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 29.045px;
+    text-align: left;
+    white-space: nowrap;
+    z-index: 51;
+}
+
+.profile-phone {
+    display: block;
+    position: relative;
+    height: 38px;
+    margin: 1px 0 0 0px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 29.045px;
+    text-align: left;
+    white-space: nowrap;
+    z-index: 50;
+}
+
+.profile-line {
+    position: relative;
+    width: 306.003px;
+    height: 2px;
+    margin: 13px 0 0 76.997px;
+    border-bottom: 1px solid #741C1C;
+    z-index: 49;
+}
+
+.deals-in-process {
+    display: block;
+    position: relative;
+    height: 29px;
+    margin: 33px 0 10px 97px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 29px;
+    text-align: left;
+    white-space: nowrap;
+    z-index: 47;
+}
+
+
+.profile-car {
+    margin-left: -20px;
+    padding-left: 20px;
+    padding-top: 10px;
+    position: relative;
+    height: 65px;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.profile-cars-name {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    width: 256px;
+    height: 40px;
+    top: 0;
+    left: 0;
+    color: #000000;
+    font-family: Inika, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26.06px;
+    text-align: left;
+    text-decoration: underline;
+    z-index: 46;
+}
+
+.profile-price-tag {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    width: 111px;
+    height: 40px;
+    top: 10px;
+    left: 256px;
+    color: #000000;
+    font-family: Inika, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 26.06px;
+    text-align: right;
+    z-index: 45;
+}
+
+.profile-rub-icon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    width: 22.485px;
+    height: 40px;
+    top: 10px;
+    left: 375px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24.205px;
+    text-align: left;
+    z-index: 44;
+}
+
+.date-tag {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    width: 105px;
+    height: 40px;
+    top: 10px;
+    left: 418px;
+    color: #000000;
+    font-family: Inika, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26.06px;
+    text-align: right;
+    z-index: 43;
+}
+
+.look-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    width: 123px;
+    height: 40px;
+    top: 10px;
+    left: 549px;
+    color: #741c1c;
+    font-family: Inika, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26.06px;
+    text-align: left;
+    text-decoration: underline;
+    z-index: 42;
+}
+
+.ended-deals {
+    display: block;
+    position: relative;
+    height: 29px;
+    margin: 29px 0 10px 97px;
+    color: #000000;
+    font-family: Inter, var(--default-font-family);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 29px;
+    text-align: left;
+    white-space: nowrap;
+    z-index: 40;
+}
+
+.profile-outline-cross {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    top: 0;
+    /* right: 20px; */
+    left: 606px;
+    background: url(../images/3323ccb7-5a3c-4676-83fa-f2a561cdbf1a.png) no-repeat center;
+    background-size: cover;
+    z-index: 53;
+    filter: invert(50%);
+    overflow: hidden;
+}
+
+.profile-outline-cross:hover {
+    cursor: pointer;
+    filter: invert(0%);
+}
+
+.profile-regroup {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    position: relative;
+    width: 158px;
+    height: 42px;
+    z-index: 9;
+}
+
+.profile-flex-row-e {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 549px;
+    height: 42px;
+    margin: 1px 0 0 90px;
+    z-index: 14;
+}
+
+.bg-sh-users {
+    flex-shrink: 0;
+    position: relative;
+    width: 42px;
+    height: 42px;
+    background: #93261e;
+    z-index: 9;
+    border-radius: 15px;
+    margin: 5px;
+}
+
+.profile-icon-users {
+    position: relative;
+    width: 27.5px;
+    height: 28.979px;
+    margin: 6.25px 0 0 7.75px;
+    background: url(../images/9cab2e48-503b-49cb-a8be-dafe72b04be4.png) no-repeat center;
+    background-size: 100% 100%;
+    z-index: 11;
+}
+
+.bg-sh-sails {
+    flex-shrink: 0;
+    position: relative;
+    width: 42px;
+    height: 42px;
+    background: #e58780;
+    z-index: 5;
+    border-radius: 15px;
+    margin: 5px;
+}
+
+.profile-icon-sails {
+    position: relative;
+    width: 27.5px;
+    height: 28.979px;
+    margin: 7.25px 0 0 7.25px;
+    background: url(../images/43e55c79-5d3e-4383-a2a2-207389a1b0e0.png) no-repeat center;
+    background-size: 100% 100%;
+    z-index: 11;
+}
+
+.bg-sh-aucs {
+    flex-shrink: 0;
+    position: relative;
+    width: 42px;
+    height: 42px;
+    background: #dc5f56;
+    z-index: 3;
+    border-radius: 15px;
+    margin: 5px;
+}
+
+.profile-icon-aucs {
+    position: relative;
+    width: 27.5px;
+    height: 28.979px;
+    margin: 7.25px 0 0 7.25px;
+    background: url(../images/f7cbf4b4-52b6-4dc3-b0df-76e3d824c7ad.png) no-repeat center;
+    background-size: 100% 100%;
+    z-index: 11;
+}
+
+.bg-sh-logout {
+    flex-shrink: 0;
+    position: relative;
+    left: -10px;
+    width: 42px;
+    height: 42px;
+    background: #741C1C;
+    z-index: 3;
+    border-radius: 15px;
+}
+
+.profile-icon-logout {
+    position: relative;
+    width: 27.5px;
+    height: 28.979px;
+    margin: 7.25px 0 0 7.25px;
+    background: url(../images/ed0c5296-07f3-4956-8857-f3867ee7e85e.png) no-repeat center;
+    background-size: 100% 100%;
+    z-index: 11;
+}

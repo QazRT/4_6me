@@ -7,6 +7,15 @@ import base64 as bs64
 
 bp = fl.Blueprint("bp_file3", __name__)
 
+def pretty_phone(phone) -> str:
+    if len(phone) != 11 or phone.isdigit() == False:
+        return "8 (800) 555-35-35"
+    
+    return f"8 ({phone[1:4]}) {phone[4:7]}-{phone[7:9]}-{phone[9:11]}"
+
+def pretty_num(price):
+    return f"{price:_}".replace('_',' ')
+
 class AuthApi:    
     @staticmethod
     def check_user(email, password):
@@ -123,6 +132,66 @@ def get_auth_window():
         return fl.render_template("auth_window.html")
     
     else:
-        return fl.render_template("profile_window.html", email=user['message']['Email'])
+        try:
+            conn = db.DBConnection()
+            conn.executeonce("""
+                            SELECT car_id FROM "Auction_cars" JOIN "Auction_history" ON
+                            "Auction_cars".id = "Auction_history".car_id
+                            WHERE "Auction_history".user_id=%(user_id)s AND "Auction_history".action='Bet'
+                            AND NOT EXISTS(SELECT id FROM "Auction_history" WHERE "Auction_history".action='Sold' 
+                                AND "Auction_history".car_id="Auction_cars".id)
+                            GROUP BY "Auction_history".car_id
+                            """, {"user_id": user['message']['id']})
+            process_cars_ids = conn.fetchall()
+            process_cars = []
+            
+            if len(process_cars_ids) != 0:
+                for i in process_cars_ids:
+                    process_cars.append(conn.get_auc_car(id=i['car_id']))
+                
+                for car in process_cars:
+                    conn.executeonce("""SELECT timestamp FROM "Auction_history" WHERE
+                                                        car_id = %(car_id)s 
+                                                        AND action = 'Bet' ORDER BY timestamp DESC LIMIT 1""",
+                                             {"car_id": car['id']})
+                    car['timestamp'] = dict(conn.fetchone())['timestamp'].strftime("%d.%m.%Y")
+                    car['curr_price'] = pretty_num(conn.get_auc_car_current_price(car_id=car['id']))
+                
+            conn.executeonce("""
+                             SELECT car_id FROM "Auction_cars" JOIN "Auction_history" ON
+                            "Auction_cars".id = "Auction_history".car_id
+                            WHERE "Auction_history".user_id=%(user_id)s AND "Auction_history".action='Sold'
+                            GROUP BY "Auction_history".car_id
+                            """, {"user_id": user['message']['id']})
+
+            auc_cars_ids = conn.fetchall()
+            auc_cars = []
+            
+            if len(auc_cars_ids) != 0:
+                for i in auc_cars_ids:
+                    auc_cars.append(conn.get_auc_car(id=i['car_id']))
+                
+                for car in auc_cars:
+                    conn.executeonce("""SELECT timestamp FROM "Auction_history" WHERE
+                                    car_id = %(car_id)s 
+                                    AND action = 'Sold' ORDER BY timestamp DESC LIMIT 1""",
+                            {"car_id": car['id']})
+                    car['timestamp'] = dict(conn.fetchone())['timestamp'].strftime("%d.%m.%Y")
+                    car['curr_price'] = pretty_num(conn.get_auc_car_current_price(car_id=car['id']))
+            
+            for car in auc_cars:
+                car['curr_price'] = pretty_num(conn.get_auc_car_current_price(car_id=car['id']))
+                
+            user_perms = conn.get_user_perms(user['message']['id'])
+        
+        except Exception as e:
+            log.error(e)
+            return fl.render_template("500.html")
+
+        finally:
+            conn.close()
+        
+        return fl.render_template("profile_window.html", auc_cars=auc_cars, user_perms=user_perms, proc_cars=process_cars, email=user['message']['Email'], name=user['message']['Name'], 
+                                  surname=user['message']['Surname'], phone_number=pretty_phone(user['message']['Phone_number']))
         
     # return fl.redirect("/auction")
