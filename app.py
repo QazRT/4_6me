@@ -16,6 +16,7 @@ import trade.sale as sale
 import trade.car_details as cdet
 import admin.edit_car as cedit
 import admin.view_all_auc_cars as adminauc
+import admin.users as users
 
 ###
 
@@ -30,6 +31,7 @@ app.register_blueprint(sale.bp)
 app.register_blueprint(cdet.bp)
 app.register_blueprint(cedit.bp)
 app.register_blueprint(adminauc.bp)
+app.register_blueprint(users.bp)
 
 
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024

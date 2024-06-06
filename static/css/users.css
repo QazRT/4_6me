@@ -1,0 +1,171 @@
+﻿:root {
+    --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei",
+        "Source Han Sans CN", sans-serif;
+}
+
+body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+input,
+select,
+textarea,
+button {
+    outline: 0;
+}
+
+.main-container {
+    position: relative;
+    /* width: auto;
+    margin: 0 auto; */
+    min-height: calc(100% - 171px - 49px - 75px - 75px - 24px - 63px);
+    /* min-height: 35vh; */
+    width: fit-content;
+    margin: 0 auto;
+    left: -170px;
+    background: #ffffff;
+    overflow: visible;
+}
+
+
+.flex-row-9 {
+    position: relative;
+    width: 1025px;
+    /* top: 222px; */
+    left: 199px;
+    z-index: 57;
+    border-collapse: collapse;
+    /* border-bottom: #93261E 2px solid; */
+}
+
+.text-full-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 439px;
+    height: 40px;
+    top: 0;
+    left: 0;
+    color: #000000;
+    font-family: Inika, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26.06px;
+    text-align: center;
+    z-index: 56;
+    border-right: 1px solid #B9B9B9;
+    border-bottom: #93261E 2px solid;
+}
+
+.table-cell-fio {
+    min-width: 280px;
+    width: 300px;
+    height: 40px;
+    font-family: Inika, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26.06px;
+    text-align: start;
+    z-index: 56;
+    white-space: pretty;
+    border-right: 1px solid #B9B9B9;
+    border-bottom: 1px solid #B9B9B9;
+    /* border-bottom: #93261E 2px solid; */
+}
+
+.table-cell-mail {
+    width: 266px;
+    height: 40px;
+    font-family: Inika, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26.06px;
+    text-align: center;
+    z-index: 56;
+    border-right: 1px solid #B9B9B9;
+    border-bottom: 1px solid #B9B9B9;
+    /* border-bottom: #93261E 2px solid; */
+}
+
+.table-cell-phone-role {
+    min-width: 170px;
+    height: 40px;
+    font-family: Inter, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26.06px;
+    text-align: center;
+    z-index: 56;
+    border-left: 1px solid #B9B9B9;
+    border-bottom: 1px solid #B9B9B9;
+    /* border-bottom: #93261E 2px solid; */
+}
+
+.table-head {
+    font-family: Inika, var(--default-font-family);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26.06px;
+    text-align: center;
+    z-index: 56;
+    /* border-right: 1px solid #B9B9B9; */
+    border-bottom: #93261E 2px solid;
+}
+
+.text-rolls-of-users {
+    display: block;
+    position: relative;
+    height: 72px;
+    margin: 49px 0 0 204px;
+    color: #000000;
+    font-family: Inika, var(--default-font-family);
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 62.544px;
+    text-align: left;
+    white-space: nowrap;
+    z-index: 58;
+}
+
+.select-rectangle {
+    width: 170px;
+    min-height: 32px;
+    top: 2px;
+    left: 376.469px;
+    /* margin-top: auto; */
+    /* cursor: pointer; */
+    background: #f6d7d5;
+    border: none;
+    z-index: 178;
+    border-radius: 15px;
+    /* padding: 8px 20px 8px 20px; */
+    padding-right: 5px;
+    font-family: Inter, var(--default-font-family);
+    text-align: right;
+}
+
+.deletebtn {
+    right: 55px;
+    top: 355px;
+    height: 30px;
+    width: 30px;
+    background: #DC5F56;
+    border-radius: 5px;
+    z-index: 1000;
+    padding: 4px;
+    padding-top: 2.5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.deletebtn:hover {
+    cursor: pointer;
+    opacity: 85%;
+}

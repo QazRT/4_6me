@@ -2,7 +2,6 @@
 import tools.db_api as db
 from tools.auth import AuthApi
 import logging as log
-from random import choice
 from datetime import datetime, timedelta, timezone
 
 bp = fl.Blueprint("bp_admin_auc", __name__)

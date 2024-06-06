@@ -15,7 +15,7 @@
     <span class="profile-phone">{{ phone_number }}</span>
     <div class="profile-regroup">
       {% if user_perms['Allow_manage_users'] %}
-        <div class="bg-sh-users icon-class">
+        <div class="bg-sh-users icon-class" onclick="document.location='/users'">
           <div class="profile-icon-users"></div>
         </div>
       {% endif %}
