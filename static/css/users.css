@@ -74,7 +74,7 @@ button {
     z-index: 56;
     white-space: pretty;
     border-right: 1px solid #B9B9B9;
-    border-bottom: 1px solid #B9B9B9;
+    border-top: 1px solid #B9B9B9;
     /* border-bottom: #93261E 2px solid; */
 }
 
@@ -88,7 +88,7 @@ button {
     text-align: center;
     z-index: 56;
     border-right: 1px solid #B9B9B9;
-    border-bottom: 1px solid #B9B9B9;
+    border-top: 1px solid #B9B9B9;
     /* border-bottom: #93261E 2px solid; */
 }
 
@@ -102,7 +102,7 @@ button {
     text-align: center;
     z-index: 56;
     border-left: 1px solid #B9B9B9;
-    border-bottom: 1px solid #B9B9B9;
+    border-top: 1px solid #B9B9B9;
     /* border-bottom: #93261E 2px solid; */
 }
 
@@ -114,6 +114,7 @@ button {
     text-align: center;
     z-index: 56;
     /* border-right: 1px solid #B9B9B9; */
+    border-top: #93261E 0px;
     border-bottom: #93261E 2px solid;
 }
 
