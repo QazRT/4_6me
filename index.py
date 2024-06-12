@@ -89,20 +89,20 @@ def home():
         
     return fl.render_template("home.html", cars=cars, **auc_car_new, auction_count=auction_count)
 
-@bp.route("/test", methods=["GET", "POST"])
-def test():
-    conn = db.DBConnection()
-    methods = list(filter(lambda x: not x.startswith("_"), dir(conn)))
-    if fl.request.method == "POST":
-        select = fl.request.form.get("test_select")
-        args = fl.request.form.get("args")
-        log.info(f"conn.{select}({args})")
-        name = eval(f"conn.{select}({args})")
-        # name = select
-    else:
-        # conn.add_auc_car(body_type="Седан")
-        name = "world"
-    return fl.render_template("test.html", name=name, option=methods)
+# @bp.route("/test", methods=["GET", "POST"])
+# def test():
+#     conn = db.DBConnection()
+#     methods = list(filter(lambda x: not x.startswith("_"), dir(conn)))
+#     if fl.request.method == "POST":
+#         select = fl.request.form.get("test_select")
+#         args = fl.request.form.get("args")
+#         log.info(f"conn.{select}({args})")
+#         name = eval(f"conn.{select}({args})")
+#         # name = select
+#     else:
+#         # conn.add_auc_car(body_type="Седан")
+#         name = "world"
+#     return fl.render_template("test.html", name=name, option=methods)
 
 @bp.route("/error/<error_id>")
 def error_example(error_id):
