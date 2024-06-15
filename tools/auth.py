@@ -194,4 +194,3 @@ def get_auth_window():
         return fl.render_template("profile_window.html", auc_cars=auc_cars, user_perms=user_perms, proc_cars=process_cars, email=user['message']['Email'], name=user['message']['Name'], 
                                   surname=user['message']['Surname'], phone_number=pretty_phone(user['message']['Phone_number']))
         
-    # return fl.redirect("/auction")

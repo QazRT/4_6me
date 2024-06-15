@@ -385,6 +385,8 @@
       view_files()
     })
     
+    files = Array.from($('#uploaded_imgs')[0].files)
+
     function view_files() {
       if (window.FormData === undefined) {
         alert('В вашем браузере FormData не поддерживается')
@@ -396,7 +398,8 @@
           var divimg = document.createElement('div')
           var img = document.createElement('img')
           var smallimg = document.createElement('img')
-    
+
+
           divimg.appendChild(img)
     
           //$('#dropContainer').removeClass('active')
@@ -425,9 +428,16 @@
             }
           })(img, smallimg)
           reader.readAsDataURL(file)
-    
           //formData.append('file[]', file)
         })
+        files.push.apply(files, Array.from($('#uploaded_imgs')[0].files))
+        const dt = new DataTransfer()
+        files.forEach((file) => { 
+          dt.items.add(file)
+        })
+        if (files != null) {
+          $('#uploaded_imgs')[0].files = dt.files
+        }
       }
     }
     
