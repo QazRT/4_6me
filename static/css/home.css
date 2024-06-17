@@ -194,7 +194,7 @@ button {
   position: relative;
   width: fit-content;
   margin: auto;
-  left: -9%;
+  left: -4%;
 }
 
 .flex-row-b {
@@ -994,7 +994,7 @@ button {
   width: max-content;
   /* margin: auto; */
   margin-top: 100px;
-  margin-left: 160px;
+  margin-left: 140px;
 }
 
 .about-text {
